@@ -1,6 +1,6 @@
 enable
 configure terminal
-hostname R2-DIST-A11
+hostname R2-DIST-A1
 !
 interface Loopback0
  ip address 1.1.1.2 255.255.255.255
