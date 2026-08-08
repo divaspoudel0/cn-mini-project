@@ -1,0 +1,517 @@
+#!/usr/bin/env python3
+"""Build the PMUN (Pulchowk Metropolitan University Network) topology to XML/.pkt.
+
+Consumes:
+  - blueprints/*.device.xml   : ENGINE fragments from real Packet Tracer saves
+                                (2911 router, 2960-24TT switch, PC-PT, Server-PT)
+  - blueprints/skeleton.xml    : a full PACKETTRACER5 shell (OPTIONS, SCENARIOSET,
+                                FILTERS, CLUSTERS, PHYSICALWORKSPACE; DEVICES/LINKS
+                                emptied) so the emitter only fills those sections.
+  - device-configs/*.txt       : per-device IOS CLI config - the source of truth
+                                for hostname / interfaces / OSPF / DHCP pools.
+
+Produces:
+  - pmun_topology.pkt   (encrypted Packet Tracer file, via pka2xml.encrypt_pka)
+  - pmun_topology.xml   (same document unencrypted, for inspection / round-trip)
+
+Usage:
+  python3 pktgen.py [outdir [pka2xml_dir]]
+
+All device geometry lives in topology(); the rest is boilerplate.
+"""
+
+import ipaddress
+import os
+import re
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+BP = os.path.join(HERE, "blueprints")
+CFG = os.path.join(HERE, "..", "device-configs")
+
+R2911_BP = os.path.join(BP, "r2911.device.xml")
+SW2960_BP = os.path.join(BP, "sw2960.device.xml")
+PC_BP = os.path.join(BP, "pc.device.xml")
+SERVER_BP = os.path.join(BP, "server.device.xml")
+SKELETON_BP = os.path.join(BP, "skeleton.xml")
+
+WIC_MODEL = "WIC-2T"            # PT saves show both "WIC-2T" and "HWIC-2T"
+GHOST_SLOT = ("        <SLOT>\n"
+              "         <TYPE>eInterfaceCard</TYPE>\n"
+              "        </SLOT>")
+
+
+def read(path):
+    return open(path, encoding="utf-8").read().strip()
+
+
+def link_local(mac):
+    """dotted aa.bb.cc.dd.ee.ff -> FE80::xxxx:xxxx:xxxx:xxxx (EUI-64)."""
+    h = mac.replace(".", "")
+    b = bytes(int(h[i:i + 2], 16) for i in range(0, 12, 2))
+    ll = ((b[0] ^ 0x02) << 8) | b[1]
+    return "FE80::%02x%02x:%02x%02x:%02x%02x" % (
+        ll >> 8, ll & 0xff, b[2], b[3], b[4], b[5])
+
+
+# ---------------------------------------------------------------------------
+# IOS config introspection
+# ---------------------------------------------------------------------------
+
+def parse_intf_config(config):
+    out = {}
+    cur = None
+    rows = []
+    for ln in config.splitlines():
+        t = ln.strip()
+        m = re.match(r"^interface ([\w\./:]+)\s*$", t)
+        if m:
+            if cur is not None:
+                out[cur] = _fold(rows)
+            cur = m.group(1)
+            rows = [t]
+        elif cur is not None:
+            rows.append(t)
+    if cur is not None:
+        out[cur] = _fold(rows)
+    return out
+
+
+def _fold(rows):
+    d = {"ip": "", "mask": "", "clock": False}
+    for r in rows:
+        mm = re.match(r"^ip address (\S+) (\S+)", r)
+        if mm:
+            d["ip"], d["mask"] = mm.group(1), mm.group(2)
+            continue
+        if re.match(r"^clock rate", r):
+            d["clock"] = True
+    return d
+
+
+def wic_count(ifaces):
+    slots = set()
+    for name in ifaces:
+        m = re.match(r"^Serial0/(\d+)/\d+$", name)
+        if m:
+            slots.add(int(m.group(1)))
+    return (max(slots) + 1) if slots else 0
+
+
+# ---------------------------------------------------------------------------
+# XML fragment builders
+# ---------------------------------------------------------------------------
+
+def set_name(xml, name):
+    xml = re.sub(r'<NAME translate="true">[^<]*</NAME>',
+                 '<NAME translate="true">%s</NAME>' % name, xml)
+    xml = re.sub(r"<SYS_NAME>[^<]*</SYS_NAME>",
+                 "<SYS_NAME>%s</SYS_NAME>" % name, xml)
+    xml = re.sub(r",[^<]+</PHYSICAL>", ",%s</PHYSICAL>" % name, xml)
+    return xml
+
+
+def set_logical(xml, x, y):
+    xml = re.sub(r"<X>[^<]*</X>\s*<Y>[^<]*</Y>",
+                 "<X>%s</X>\n      <Y>%s</Y>" % (x, y), xml)
+    return xml
+
+
+def set_running(xml, config):
+    lines = [ln.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+             for ln in config.splitlines()]
+    body = "\n".join("      <LINE>%s</LINE>" % ln for ln in lines)
+    return re.sub(r"<RUNNINGCONFIG>.*?</RUNNINGCONFIG>",
+                  "<RUNNINGCONFIG>\n%s\n     </RUNNINGCONFIG>" % body, xml,
+                  flags=re.S)
+
+
+# ---------------------------------------------------------------------------
+# device builders
+# ---------------------------------------------------------------------------
+
+def serial_card(slot, ifaces, maca, macb):
+    """One WIC-2T slot with two eSmartSerial ports (Serial0/<slot>/0 and /1)."""
+    infoa = ifaces.get("Serial0/%d/0" % slot, {"mask": "", "clock": False})
+    infob = ifaces.get("Serial0/%d/1" % slot, {"mask": "", "clock": False})
+    porta = _serial_port(maca, infoa)
+    portb = _serial_port(macb, infob)
+    return (
+        "        <SLOT>\n"
+        "         <TYPE>eInterfaceCard</TYPE>\n"
+        "         <MODULE>\n"
+        "          <TYPE>eInterfaceCard</TYPE>\n"
+        "          <MODEL>%s</MODEL>\n" % WIC_MODEL +
+        porta + "\n" + portb + "\n" +
+        "         </MODULE>\n"
+        "        </SLOT>")
+
+
+def _serial_port(mac, info):
+    ll = link_local(mac)
+    return (
+        "          <PORT>\n"
+        "           <TYPE>eSmartSerial</TYPE>\n"
+        "           <POWER>true</POWER>\n"
+        "           <PINS>false</PINS>\n"
+        "           <BANDWIDTH>1544</BANDWIDTH>\n"
+        "           <FULLDUPLEX>true</FULLDUPLEX>\n"
+        "           <AUTONEGOTIATEBANDWIDTH>true</AUTONEGOTIATEBANDWIDTH>\n"
+        "           <AUTONEGOTIATEDUPLEX>true</AUTONEGOTIATEDUPLEX>\n"
+        "           <MACADDRESS>%s</MACADDRESS>\n"
+        "           <BIA>%s</BIA>\n"
+        "           <CLOCKRATE>64000</CLOCKRATE>\n"
+        "           <CLOCKRATEFLAG>%s</CLOCKRATEFLAG>\n"
+        "           <DESCRIPTION/>\n"
+        "           <CHANNEL>0</CHANNEL>\n"
+        "           <IP/>\n"
+        "           <SUBNET/>\n"
+        "           <PORT_GATEWAY/>\n"
+        "           <PORT_DNS/>\n"
+        "           <PORT_DHCP_ENABLE>false</PORT_DHCP_ENABLE>\n"
+        "           <ND_SUPPRESSED>false</ND_SUPPRESSED>\n"
+        "           <TIMEOUT>14400000</TIMEOUT>\n"
+        "           <PC_FIREWALL>false</PC_FIREWALL>\n"
+        "           <PC_IPV6_FIREWALL>false</PC_IPV6_FIREWALL>\n"
+        "           <IPV6_ENABLED>false</IPV6_ENABLED>\n"
+        "           <IPV6_ADDRESS_AUTOCONFIG>false</IPV6_ADDRESS_AUTOCONFIG>\n"
+        "           <IPV6_PORT_GATEWAY/>\n"
+        "           <IPV6_PORT_DNS/>\n"
+        "           <IPV6_LINK_LOCAL>%s</IPV6_LINK_LOCAL>\n"
+        "           <IPV6_DEFAULT_LINK_LOCAL>%s</IPV6_DEFAULT_LINK_LOCAL>\n"
+        "           <IPV6_PORT_AUTO_CONFIG_ENABLED>false</IPV6_PORT_AUTO_CONFIG_ENABLED>\n"
+        "           <IPV6_PORT_DHCP_ENABLED>false</IPV6_PORT_DHCP_ENABLED>\n"
+        "           <IPV6_ADDRESSES/>\n"
+        "          </PORT>" % (mac, mac, "true" if info["clock"] else "false", ll, ll))
+
+
+def build_router(name, config, x, y, macgen):
+    frag = read(R2911_BP)
+    frag = set_name(frag, name)
+    frag = set_logical(frag, x, y)
+    frag = set_running(frag, config)
+    ifaces = parse_intf_config(config)
+    wic = wic_count(ifaces)
+    if wic:
+        cards = "\n".join(serial_card(slot, ifaces, macgen(), macgen())
+                          for slot in range(wic))
+        # put the cards into the first empty eInterfaceCard slot
+        frag = frag.replace(GHOST_SLOT, cards, 1)
+    return frag
+
+
+def build_switch(name, config, x, y):
+    frag = read(SW2960_BP)
+    frag = set_name(frag, name)
+    frag = set_logical(frag, x, y)
+    frag = set_running(frag, config)
+    return frag
+
+
+def build_host(dev, macgen):
+    bp = SERVER_BP if dev["kind"] == "server" else PC_BP
+    frag = read(bp)
+    frag = set_name(frag, dev["name"])
+    frag = set_logical(frag, dev["x"], dev["y"])
+    frag = host_port_fill(frag, dev.get("ip", ""), dev.get("mask", ""),
+                          dev.get("gw", ""), dev.get("dns", ""),
+                          dev.get("dhcp", False))
+    if dev["kind"] == "server" and dev.get("records"):
+        frag = server_dns(frag, dev["records"])
+    return frag
+
+
+def host_port_fill(xml, ip, mask, gw, dns, dhcp):
+    # blueprints carry empty `<TAG/>` forms; normalize to `<TAG></TAG>`
+    def _norm(m):
+        return "<%s></%s>" % (m.group(1), m.group(1))
+    for tag in ("PORT_DHCP_ENABLE", "IP", "SUBNET", "PORT_GATEWAY",
+                "PORT_DNS", "GATEWAY"):
+        xml = re.sub(r"<(%s)\s*/>" % tag, _norm, xml)
+    pat = r"(<PORT>\s*<TYPE>\s*eCopperFastEthernet\b.*?</PORT>)"
+    def sub(m):
+        p = m.group(1)
+        p = re.sub(r"<PORT_DHCP_ENABLE>[^<]*</PORT_DHCP_ENABLE>",
+                   "<PORT_DHCP_ENABLE>%s</PORT_DHCP_ENABLE>"
+                   % ("true" if dhcp else "false"), p)
+        if dhcp:
+            p = re.sub(r"<IP>[^<]*</IP>", "<IP/>", p)
+            p = re.sub(r"<SUBNET>[^<]*</SUBNET>", "<SUBNET/>", p)
+            p = re.sub(r"<PORT_GATEWAY>[^<]*</PORT_GATEWAY>", "<PORT_GATEWAY/>", p)
+        else:
+            p = re.sub(r"<IP>[^<]*</IP>", "<IP>%s</IP>" % ip, p)
+            p = re.sub(r"<SUBNET>[^<]*</SUBNET>", "<SUBNET>%s</SUBNET>" % mask, p)
+            p = re.sub(r"<PORT_GATEWAY>[^<]*</PORT_GATEWAY>",
+                       "<PORT_GATEWAY>%s</PORT_GATEWAY>" % gw, p)
+        if dns:
+            p = re.sub(r"<PORT_DNS>[^<]*</PORT_DNS>", "<PORT_DNS>%s</PORT_DNS>" % dns, p)
+        return p
+    xml, _ = re.subn(pat, sub, xml, count=1, flags=re.S)
+    if gw:
+        def _gw(m, _gw_val=gw):
+            return m.group(1) + _gw_val + m.group(2)
+        xml = re.sub(r"(<GATEWAY>)[^<]*(</GATEWAY>)", _gw, xml)
+    return xml
+
+
+def server_dns(xml, records):
+    rows = "\n".join(
+        "       <RESOURCE-RECORD>\n"
+        "        <TYPE>A-REC</TYPE>\n"
+        "        <NAME>%s</NAME>\n"
+        "        <TTL>86400</TTL>\n"
+        "        <IPADDRESS>%s</IPADDRESS>\n"
+        "       </RESOURCE-RECORD>" % (nm, ip) for nm, ip in records)
+    block = ("<DNS_SERVER>\n"
+             "      <ENABLED>1</ENABLED>\n"
+             "      <NAMESERVER-DATABASE>\n"
+             "%s\n"
+             "      </NAMESERVER-DATABASE>\n"
+             "     </DNS_SERVER>" % rows)
+    return re.sub(r"<DNS_SERVER>.*?</DNS_SERVER>", block, xml, flags=re.S)
+
+
+def device_wrap(frag):
+    return "   <DEVICE>\n%s\n   </DEVICE>" % frag
+
+
+# ---------------------------------------------------------------------------
+# links
+# ---------------------------------------------------------------------------
+
+def serial_link(f, fport, t, tport, dce_idx, dce_name):
+    return ("   <LINK>\n"
+            "    <TYPE>eSerial</TYPE>\n"
+            "    <CABLE>\n"
+            "     <LENGTH>0</LENGTH>\n"
+            "     <FROM>%d</FROM>\n"
+            "     <PORT>%s</PORT>\n"
+            "     <TO>%d</TO>\n"
+            "     <PORT>%s</PORT>\n"
+            "     <DCEDEV>%d</DCEDEV>\n"
+            "     <DCEPORT>%s</DCEPORT>\n"
+            "    </CABLE>\n"
+            "   </LINK>" % (f, fport, t, tport, dce_idx, dce_name))
+
+
+def copper_link(f, fport, t, tport):
+    return ("   <LINK>\n"
+            "    <TYPE>eCopper</TYPE>\n"
+            "    <CABLE>\n"
+            "     <LENGTH>0</LENGTH>\n"
+            "     <FROM>%d</FROM>\n"
+            "     <PORT>%s</PORT>\n"
+            "     <TO>%d</TO>\n"
+            "     <PORT>%s</PORT>\n"
+            "     <TYPE>eStraightThrough</TYPE>\n"
+            "    </CABLE>\n"
+            "   </LINK>" % (f, fport, t, tport))
+
+
+# ---------------------------------------------------------------------------
+# topology
+# ---------------------------------------------------------------------------
+
+def def_device(name, kind, x=0, y=0, **kw):
+    d = {"name": name, "kind": kind, "x": x, "y": y}
+    d.update(kw)
+    return d
+
+
+def topology():
+    """Build the concrete network and return (devices, links)."""
+    devices = []
+    index = {}
+
+    def add(d):
+        index[d["name"]] = len(devices)
+        devices.append(d)
+
+    # ---- routers ----------------------------------------------------------
+    for name, fname, x, y in (
+            ("ISP-RTR", "ISP-RTR.txt", 640, 90),
+            ("R9-BORDER", "R9-BORDER.txt", 300, 90),
+            ("R1-CORE", "R1-CORE.txt", 120, 140),
+            ("R2-DIST-A1", "R2-DIST-A1.txt", 60, 280),
+            ("R3-DIST-A2", "R3-DIST-A2.txt", 360, 280),
+            ("R4-ACC-ADMIN", "R4-ACC-ADMIN.txt", 40, 450),
+            ("R5-ACC-FACULTY", "R5-ACC-FACULTY.txt", 130, 450),
+            ("R6-ACC-STUDENT", "R6-ACC-STUDENT.txt", 220, 450),
+            ("R7-ACC-ENG", "R7-ACC-ENG.txt", 430, 450),
+            ("R8-ACC-HOSTEL", "R8-ACC-HOSTEL.txt", 520, 450),
+            ("R10-ACC-BRANCH", "R10-ACC-BRANCH.txt", 560, 620),
+    ):
+        add({"name": name, "kind": "router", "config": _load_cfg(fname),
+             "x": x, "y": y})
+
+    # ---- switches ----------------------------------------------------------
+    for name, fname, x, y in (
+            ("SW-ADMIN", "SW-ADMIN.txt", 40, 560),
+            ("SW-FACULTY", "SW-FACULTY.txt", 130, 560),
+            ("SW-STUDENT", "SW-STUDENT.txt", 220, 560),
+            ("SW-SERVICES", "SW-SERVICES.txt", 320, 560),
+    ):
+        add({"name": name, "kind": "switch", "config": _load_cfg(fname),
+             "x": x, "y": y})
+
+    # ---- hosts --------------------------------------------------------------
+    hosts = [
+        # name, kind, ip, mask, gw, dns, dhcp, x, y, records
+        ("DNS-SERVER", "server", "10.10.0.10", "255.255.255.224", "10.10.0.1",
+         "10.10.0.10", False, 10, 360,
+         [("dns.pmun.edu.np", "10.10.0.10"),
+          ("www.pmun.edu.np", "10.10.0.100")]),
+        ("WEB-SERVER", "server", "10.10.0.100", "255.255.255.224", "10.10.0.97",
+         "10.10.0.10", False, 400, 90, [("web.pmun.edu.np", "10.10.0.100")]),
+        ("MAIL-SERVER", "server", "10.10.0.11", "255.255.255.224", "10.10.0.1",
+         "10.10.0.10", False, 70, 120, [("mail.pmun.edu.np", "10.10.0.11")]),
+        ("ISP-DNS", "server", "198.51.100.10", "255.255.255.240", "198.51.100.1",
+         "198.51.100.10", False, 500, 60, [("ns.isp.net", "198.51.100.10")]),
+        ("ADMIN-PC", "pc", "", "", "", "", True, 20, 600),
+        ("ADMIN-PC2", "pc", "", "", "", "", True, 40, 630),
+        ("FACULTY-PC", "pc", "", "", "", "", True, 110, 600),
+        ("STUDENT-PC", "pc", "", "", "", "", True, 200, 600),
+        ("STUDENT-PC2", "pc", "", "", "", "", True, 220, 630),
+        ("LIBRARY-PC", "pc", "", "", "", "", True, 20, 680),
+        ("ENG-PC", "pc", "", "", "", "", True, 400, 600),
+        ("HOSTEL-PC", "pc", "", "", "", "", True, 500, 600),
+        ("BRANCH-PC", "pc", "", "", "", "", True, 540, 670),
+    ]
+    for h in hosts:
+        rec = {
+            "name": h[0], "kind": h[1], "ip": h[2], "mask": h[3], "gw": h[4],
+            "dns": h[5], "dhcp": h[6], "x": h[7], "y": h[8],
+        }
+        if len(h) > 9 and h[9]:
+            rec["records"] = h[9]
+        add(rec)
+
+    # ---- serial point-to-point ----------------------------------------------
+    serial = [
+        # (deviceA, serialA, deviceB, serialB)  -- DCE side carries the clock
+        ("ISP-RTR", "Serial0/0/0", "R9-BORDER", "Serial0/0/1"),
+        ("R9-BORDER", "Serial0/0/0", "R1-CORE", "Serial0/1/0"),
+        ("R1-CORE", "Serial0/0/0", "R2-DIST-A1", "Serial0/0/0"),
+        ("R1-CORE", "Serial0/0/1", "R3-DIST-A2", "Serial0/0/1"),
+        ("R2-DIST-A1", "Serial0/0/1", "R3-DIST-A2", "Serial0/0/0"),
+        ("R2-DIST-A1", "Serial0/1/0", "R4-ACC-ADMIN", "Serial0/0/0"),
+        ("R2-DIST-A1", "Serial0/1/1", "R5-ACC-FACULTY", "Serial0/0/0"),
+        ("R2-DIST-A1", "Serial0/2/0", "R6-ACC-STUDENT", "Serial0/0/0"),
+        ("R5-ACC-FACULTY", "Serial0/0/1", "R6-ACC-STUDENT", "Serial0/0/1"),
+        ("R3-DIST-A2", "Serial0/1/0", "R7-ACC-ENG", "Serial0/0/0"),
+        ("R3-DIST-A2", "Serial0/1/1", "R8-ACC-HOSTEL", "Serial0/0/0"),
+        ("R7-ACC-ENG", "Serial0/0/1", "R10-ACC-BRANCH", "Serial0/0/0"),
+        ("R8-ACC-HOSTEL", "Serial0/0/1", "R10-ACC-BRANCH", "Serial0/0/1"),
+    ]
+    # determine which endpoint is DCE (the side that has `clock rate`)
+    dce = {}
+    for d in devices:
+        if d["kind"] != "router":
+            continue
+        for name, info in parse_intf_config(d["config"]).items():
+            if info["clock"]:
+                dce[(d["name"], name)] = True
+
+    serial_links = []
+    for a, pa, b, pb in serial:
+        a_is_dce = (a, pa) in dce
+        if a_is_dce:
+            serial_links.append(serial_link(index[a], pa, index[b], pb, 0, pa))
+        else:
+            serial_links.append(serial_link(index[a], pa, index[b], pb, 1, pb))
+
+    # ---- copper --------------------------------------------------------------
+    copper = [
+        ("R4-ACC-ADMIN", "GigabitEthernet0/0", "SW-ADMIN", "GigabitEthernet0/1"),
+        ("R5-ACC-FACULTY", "GigabitEthernet0/0", "SW-FACULTY", "GigabitEthernet0/1"),
+        ("R6-ACC-STUDENT", "GigabitEthernet0/0", "SW-STUDENT", "GigabitEthernet0/1"),
+        ("SW-ADMIN", "GigabitEthernet0/2", "SW-FACULTY", "GigabitEthernet0/2"),
+        ("R4-ACC-ADMIN", "GigabitEthernet0/1", "SW-SERVICES", "GigabitEthernet0/1"),
+        ("SW-SERVICES", "FastEthernet0/1", "DNS-SERVER", "FastEthernet0"),
+        ("SW-SERVICES", "FastEthernet0/2", "MAIL-SERVER", "FastEthernet0"),
+        ("R9-BORDER", "GigabitEthernet0/0", "WEB-SERVER", "FastEthernet0"),
+        ("R4-ACC-ADMIN", "GigabitEthernet0/2", "LIBRARY-PC", "FastEthernet0"),
+        ("SW-ADMIN", "FastEthernet0/1", "ADMIN-PC", "FastEthernet0"),
+        ("SW-ADMIN", "FastEthernet0/2", "ADMIN-PC2", "FastEthernet0"),
+        ("SW-FACULTY", "FastEthernet0/1", "FACULTY-PC", "FastEthernet0"),
+        ("SW-STUDENT", "FastEthernet0/1", "STUDENT-PC", "FastEthernet0"),
+        ("SW-STUDENT", "FastEthernet0/2", "STUDENT-PC2", "FastEthernet0"),
+        ("R7-ACC-ENG", "GigabitEthernet0/0", "ENG-PC", "FastEthernet0"),
+        ("R8-ACC-HOSTEL", "GigabitEthernet0/0", "HOSTEL-PC", "FastEthernet0"),
+        ("R10-ACC-BRANCH", "GigabitEthernet0/0", "BRANCH-PC", "FastEthernet0"),
+        ("ISP-RTR", "GigabitEthernet0/0", "ISP-DNS", "FastEthernet0"),
+    ]
+    copper_links = [copper_link(index[a], pa, index[b], pb) for a, pa, b, pb in copper]
+
+    return devices, serial_links, copper_links
+
+
+def _load_cfg(fname):
+    return read(os.path.join(CFG, fname))
+
+
+# ---------------------------------------------------------------------------
+# assembly
+# ---------------------------------------------------------------------------
+
+def render(devices, serial_links, copper_links, macgen):
+    parts = []
+    for d in devices:
+        if d["kind"] == "router":
+            frag = build_router(d["name"], d["config"], d["x"], d["y"], macgen)
+        elif d["kind"] == "switch":
+            frag = build_switch(d["name"], d["config"], d["x"], d["y"])
+        else:
+            frag = build_host(d, macgen)
+        parts.append(device_wrap(frag))
+    devices_xml = "\n".join(parts)
+
+    links_xml = "\n".join(serial_links + copper_links)
+
+    skeleton = read(SKELETON_BP)
+    # insert devices and links into their emptied containers
+    skeleton = re.sub(r"(<DEVICES>\s*)(.*?)(\s*</DEVICES>)",
+                      lambda m: m.group(1) + "\n" + devices_xml + "\n  " + m.group(3),
+                      skeleton, flags=re.S)
+    skeleton = re.sub(r"(<LINKS>\s*)(.*?)(\s*</LINKS>)",
+                      lambda m: m.group(1) + "\n" + links_xml + "\n  " + m.group(3),
+                      skeleton, flags=re.S)
+    return skeleton
+
+
+def macgen_factory():
+    i = [0x0001]
+    def _next():
+        i[0] += 1
+        return "0060.709D.%04X" % (i[0] & 0xFFFF)
+    return _next
+
+
+def main(outdir=".", twodir=None):
+    os.makedirs(outdir, exist_ok=True)
+    devices, serial_links, copper_links = topology()
+    xml = render(devices, serial_links, copper_links, macgen_factory())
+
+    xml_path = os.path.join(outdir, "pmun_topology.xml")
+    open(xml_path, "w", encoding="utf-8").write(xml)
+
+    # encrypt
+    if twodir is None:
+        twodir = "/tmp/opencode/pka2xml"
+    sys.path.insert(0, os.path.abspath(twodir))
+    from pka2xml import encrypt_pka, decrypt_pka
+    pkg = encrypt_pka(xml.encode("utf-8"))
+    pkt_path = os.path.join(outdir, "pmun_topology.pkt")
+    open(pkt_path, "wb").write(pkg)
+
+    # round-trip
+    back = decrypt_pka(pkg).decode("utf-8")
+    print("wrote %s (%d devices, %d links)" % (pkt_path, len(devices), len(serial_links) + len(copper_links)))
+    print("round-trip XML match: %s" % (back == xml))
+
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    out = args[0] if args else "."
+    td = args[1] if len(args) > 1 else None
+    main(out, td)
