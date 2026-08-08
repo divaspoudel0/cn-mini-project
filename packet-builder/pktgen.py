@@ -107,7 +107,17 @@ def set_name(xml, name):
                  '<NAME translate="true">%s</NAME>' % name, xml)
     xml = re.sub(r"<SYS_NAME>[^<]*</SYS_NAME>",
                  "<SYS_NAME>%s</SYS_NAME>" % name, xml)
-    xml = re.sub(r",[^<]+</PHYSICAL>", ",%s</PHYSICAL>" % name, xml)
+    return xml
+
+
+def set_physical(xml, name, kind):
+    """Device WORKSPACE/PHYSICAL must name an existing node of the
+    PHYSICALWORKSPACE tree: Intercity,...Wiring Closet,Table|Rack,<name>."""
+    container = "Table" if kind == "pc" else "Rack"
+    path = ("Intercity,Home City,Corporate Office,Main Wiring Closet,"
+            "%s,%s") % (container, name)
+    xml = re.sub(r'<PHYSICAL translate="true">[^<]*</PHYSICAL>',
+                 '<PHYSICAL translate="true">%s</PHYSICAL>' % path, xml)
     return xml
 
 
@@ -188,6 +198,7 @@ def _serial_port(mac, info):
 def build_router(name, config, x, y, macgen):
     frag = read(R2911_BP)
     frag = set_name(frag, name)
+    frag = set_physical(frag, name, "router")
     frag = set_logical(frag, x, y)
     frag = set_running(frag, config)
     ifaces = parse_intf_config(config)
@@ -203,6 +214,7 @@ def build_router(name, config, x, y, macgen):
 def build_switch(name, config, x, y):
     frag = read(SW2960_BP)
     frag = set_name(frag, name)
+    frag = set_physical(frag, name, "switch")
     frag = set_logical(frag, x, y)
     frag = set_running(frag, config)
     return frag
@@ -212,6 +224,7 @@ def build_host(dev, macgen):
     bp = SERVER_BP if dev["kind"] == "server" else PC_BP
     frag = read(bp)
     frag = set_name(frag, dev["name"])
+    frag = set_physical(frag, dev["name"], dev["kind"])
     frag = set_logical(frag, dev["x"], dev["y"])
     frag = host_port_fill(frag, dev.get("ip", ""), dev.get("mask", ""),
                           dev.get("gw", ""), dev.get("dns", ""),
@@ -451,8 +464,105 @@ def _load_cfg(fname):
 
 
 # ---------------------------------------------------------------------------
-# assembly
+# physical workspace tree
 # ---------------------------------------------------------------------------
+
+def _node_block(xml, name):
+    """Return (start,end) of the <NODE>...</NODE> whose <NAME> is `name`."""
+    i = xml.find('<NAME translate="true">%s</NAME>' % name)
+    if i < 0:
+        return None, None
+    start = xml.rfind('<NODE>', 0, i)
+    depth = 0
+    j = start
+    while j < len(xml):
+        n_open = xml.find('<NODE>', j)
+        n_close = xml.find('</NODE>', j)
+        nxt = min(x for x in (n_open, n_close) if x >= 0)
+        if nxt == n_open:
+            depth += 1
+            j = n_open + len('<NODE>')
+        else:
+            depth -= 1
+            j = n_close + len('</NODE>')
+            if depth == 0:
+                return start, j
+    return None, None
+
+
+_WS_DEVICE = (
+    "            <NODE>\n"
+    "             <X>%s</X>\n"
+    "             <Y>%s</Y>\n"
+    "             <TYPE>6</TYPE>\n"
+    "             <NAME translate=\"true\">%s</NAME>\n"
+    "             <SX>1</SX>\n"
+    "             <SY>1</SY>\n"
+    "             <W>0</W>\n"
+    "             <H>0</H>\n"
+    "             <PATH>../art/Background/grid_100x100.png</PATH>\n"
+    "             <CHILDREN/>\n"
+    "             <MANUAL_SCALING>false</MANUAL_SCALING>\n"
+    "             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>\n"
+    "             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>\n"
+    "             <INIT_WIDTH>0</INIT_WIDTH>\n"
+    "             <INIT_HEIGHT>0</INIT_HEIGHT>\n"
+    "             <INIT_SX>1</INIT_SX>\n"
+    "             <INIT_SY>0</INIT_SY>\n"
+    "             <BG_TILED>false</BG_TILED>\n"
+    "            </NODE>")
+
+
+def _ws_container(ntype, cname, children):
+    return ("            <NODE>\n"
+            "             <X>0</X>\n"
+            "             <Y>0</Y>\n"
+            "             <TYPE>%s</TYPE>\n"
+            "             <NAME translate=\"true\">%s</NAME>\n"
+            "             <SX>1</SX>\n"
+            "             <SY>1</SY>\n"
+            "             <W>0</W>\n"
+            "             <H>0</H>\n"
+            "             <PATH>../art/Background/grid_100x100.png</PATH>\n"
+            "             <CHILDREN>\n%s\n"
+            "             </CHILDREN>\n"
+            "             <MANUAL_SCALING>false</MANUAL_SCALING>\n"
+            "             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>\n"
+            "             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>\n"
+            "             <INIT_WIDTH>0</INIT_WIDTH>\n"
+            "             <INIT_HEIGHT>0</INIT_HEIGHT>\n"
+            "             <INIT_SX>1</INIT_SX>\n"
+            "             <INIT_SY>0</INIT_SY>\n"
+            "             <BG_TILED>false</BG_TILED>\n"
+            "            </NODE>" % (ntype, cname, children))
+
+
+def build_workspace(xml, devices):
+    """Rebuild the <PHYSICALWORKSPACE> device nodes from the device list so
+    every device has a matching NODE (PT rejects files whose devices have no
+    physical-workspace node). PCs hang on the Table, routers/switches/servers
+    on the Rack."""
+    pcs = [d for d in devices if d["kind"] == "pc"]
+    racks = [d for d in devices if d["kind"] != "pc"]
+    table = "\n".join(_WS_DEVICE % (i * 12, 0, d["name"])
+                      for i, d in enumerate(pcs))
+    rack = "\n".join(_WS_DEVICE % (i * 12, 0, d["name"])
+                     for i, d in enumerate(racks))
+    table_block = _ws_container(5, "Table", table)
+    rack_block = _ws_container(4, "Rack", rack)
+
+    s, e = _node_block(xml, "Table")
+    if s is None:
+        return xml
+    xml = xml[:s] + table_block + xml[e:]
+    s, e = _node_block(xml, "Rack")
+    if s is None:
+        return xml
+    xml = xml[:s] + rack_block + xml[e:]
+    return xml
+
+
+
 
 def render(devices, serial_links, copper_links, macgen):
     parts = []
@@ -475,6 +585,9 @@ def render(devices, serial_links, copper_links, macgen):
                       skeleton, flags=re.S)
     skeleton = re.sub(r"(<LINKS>\s*)(.*?)(\s*</LINKS>)",
                       lambda m: m.group(1) + "\n" + links_xml + "\n  " + m.group(3),
+                      skeleton, flags=re.S)
+    skeleton = build_workspace(skeleton, devices)
+    skeleton = re.sub(r"<NOTES>.*?</NOTES>", "<NOTES></NOTES>",
                       skeleton, flags=re.S)
     return skeleton
 
