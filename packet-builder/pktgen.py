@@ -121,9 +121,15 @@ def set_physical(xml, name, kind):
     return xml
 
 
-def set_logical(xml, x, y):
+def set_logical(xml, x, y, mem_addr=None, dev_addr=None):
     xml = re.sub(r"<X>[^<]*</X>\s*<Y>[^<]*</Y>",
                  "<X>%s</X>\n      <Y>%s</Y>" % (x, y), xml)
+    if mem_addr is not None:
+        xml = re.sub(r"<MEM_ADDR>[^<]*</MEM_ADDR>",
+                     "<MEM_ADDR>%d</MEM_ADDR>" % mem_addr, xml)
+    if dev_addr is not None:
+        xml = re.sub(r"<DEV_ADDR>[^<]*</DEV_ADDR>",
+                     "<DEV_ADDR>%d</DEV_ADDR>" % dev_addr, xml)
     return xml
 
 
@@ -195,11 +201,11 @@ def _serial_port(mac, info):
         "          </PORT>" % (mac, mac, "true" if info["clock"] else "false", ll, ll))
 
 
-def build_router(name, config, x, y, macgen):
+def build_router(name, config, x, y, macgen, mem_addr, dev_addr):
     frag = read(R2911_BP)
     frag = set_name(frag, name)
     frag = set_physical(frag, name, "router")
-    frag = set_logical(frag, x, y)
+    frag = set_logical(frag, x, y, mem_addr, dev_addr)
     frag = set_running(frag, config)
     ifaces = parse_intf_config(config)
     wic = wic_count(ifaces)
@@ -211,21 +217,21 @@ def build_router(name, config, x, y, macgen):
     return frag
 
 
-def build_switch(name, config, x, y):
+def build_switch(name, config, x, y, mem_addr, dev_addr):
     frag = read(SW2960_BP)
     frag = set_name(frag, name)
     frag = set_physical(frag, name, "switch")
-    frag = set_logical(frag, x, y)
+    frag = set_logical(frag, x, y, mem_addr, dev_addr)
     frag = set_running(frag, config)
     return frag
 
 
-def build_host(dev, macgen):
+def build_host(dev, macgen, mem_addr, dev_addr):
     bp = SERVER_BP if dev["kind"] == "server" else PC_BP
     frag = read(bp)
     frag = set_name(frag, dev["name"])
     frag = set_physical(frag, dev["name"], dev["kind"])
-    frag = set_logical(frag, dev["x"], dev["y"])
+    frag = set_logical(frag, dev["x"], dev["y"], mem_addr, dev_addr)
     frag = host_port_fill(frag, dev.get("ip", ""), dev.get("mask", ""),
                           dev.get("gw", ""), dev.get("dns", ""),
                           dev.get("dhcp", False))
@@ -288,11 +294,33 @@ def device_wrap(frag):
     return "   <DEVICE>\n%s\n   </DEVICE>" % frag
 
 
+_dev_addr_counter = [0]
+_port_addr_counter = [0]
+
+
+def _addr_seq(counter, base):
+    counter[0] += 1
+    return base + counter[0]
+
+
+def make_device_addrs():
+    """Return (mem_addr, dev_addr) unique across all generated devices."""
+    mem = _addr_seq(_dev_addr_counter, 100000000)
+    dev = _addr_seq(_dev_addr_counter, 100000000)
+    return mem, dev
+
+
+def make_port_addrs():
+    return (_addr_seq(_port_addr_counter, 200000000),
+            _addr_seq(_port_addr_counter, 200000000))
+
+
 # ---------------------------------------------------------------------------
 # links
 # ---------------------------------------------------------------------------
 
-def serial_link(f, fport, t, tport, dce_idx, dce_name):
+def serial_link(f, fport, t, tport, dce_idx, dce_name,
+                fdev_addr, tdev_addr, fp, tp):
     return ("   <LINK>\n"
             "    <TYPE>eSerial</TYPE>\n"
             "    <CABLE>\n"
@@ -301,13 +329,18 @@ def serial_link(f, fport, t, tport, dce_idx, dce_name):
             "     <PORT>%s</PORT>\n"
             "     <TO>%d</TO>\n"
             "     <PORT>%s</PORT>\n"
+            "     <FROM_DEVICE_MEM_ADDR>%d</FROM_DEVICE_MEM_ADDR>\n"
+            "     <TO_DEVICE_MEM_ADDR>%d</TO_DEVICE_MEM_ADDR>\n"
+            "     <FROM_PORT_MEM_ADDR>%d</FROM_PORT_MEM_ADDR>\n"
+            "     <TO_PORT_MEM_ADDR>%d</TO_PORT_MEM_ADDR>\n"
             "     <DCEDEV>%d</DCEDEV>\n"
             "     <DCEPORT>%s</DCEPORT>\n"
             "    </CABLE>\n"
-            "   </LINK>" % (f, fport, t, tport, dce_idx, dce_name))
+            "   </LINK>" % (f, fport, t, tport, fdev_addr, tdev_addr,
+                            fp, tp, dce_idx, dce_name))
 
 
-def copper_link(f, fport, t, tport):
+def copper_link(f, fport, t, tport, fdev_addr, tdev_addr, fp, tp):
     return ("   <LINK>\n"
             "    <TYPE>eCopper</TYPE>\n"
             "    <CABLE>\n"
@@ -316,9 +349,13 @@ def copper_link(f, fport, t, tport):
             "     <PORT>%s</PORT>\n"
             "     <TO>%d</TO>\n"
             "     <PORT>%s</PORT>\n"
+            "     <FROM_DEVICE_MEM_ADDR>%d</FROM_DEVICE_MEM_ADDR>\n"
+            "     <TO_DEVICE_MEM_ADDR>%d</TO_DEVICE_MEM_ADDR>\n"
+            "     <FROM_PORT_MEM_ADDR>%d</FROM_PORT_MEM_ADDR>\n"
+            "     <TO_PORT_MEM_ADDR>%d</TO_PORT_MEM_ADDR>\n"
             "     <TYPE>eStraightThrough</TYPE>\n"
             "    </CABLE>\n"
-            "   </LINK>" % (f, fport, t, tport))
+            "   </LINK>" % (f, fport, t, tport, fdev_addr, tdev_addr, fp, tp))
 
 
 # ---------------------------------------------------------------------------
@@ -337,6 +374,7 @@ def topology():
     index = {}
 
     def add(d):
+        d["mem_addr"], d["dev_addr"] = make_device_addrs()
         index[d["name"]] = len(devices)
         devices.append(d)
 
@@ -427,11 +465,17 @@ def topology():
 
     serial_links = []
     for a, pa, b, pb in serial:
+        fa, ta = devices[index[a]], devices[index[b]]
+        fpa, tpa = make_port_addrs()
         a_is_dce = (a, pa) in dce
         if a_is_dce:
-            serial_links.append(serial_link(index[a], pa, index[b], pb, 0, pa))
+            serial_links.append(serial_link(index[a], pa, index[b], pb, 0, pa,
+                                            fa["dev_addr"], ta["dev_addr"],
+                                            fpa, tpa))
         else:
-            serial_links.append(serial_link(index[a], pa, index[b], pb, 1, pb))
+            serial_links.append(serial_link(index[a], pa, index[b], pb, 1, pb,
+                                            fa["dev_addr"], ta["dev_addr"],
+                                            fpa, tpa))
 
     # ---- copper --------------------------------------------------------------
     copper = [
@@ -454,7 +498,13 @@ def topology():
         ("R10-ACC-BRANCH", "GigabitEthernet0/0", "BRANCH-PC", "FastEthernet0"),
         ("ISP-RTR", "GigabitEthernet0/0", "ISP-DNS", "FastEthernet0"),
     ]
-    copper_links = [copper_link(index[a], pa, index[b], pb) for a, pa, b, pb in copper]
+    copper_links = []
+    for a, pa, b, pb in copper:
+        fa, ta = devices[index[a]], devices[index[b]]
+        fpa, tpa = make_port_addrs()
+        copper_links.append(copper_link(index[a], pa, index[b], pb,
+                                        fa["dev_addr"], ta["dev_addr"],
+                                        fpa, tpa))
 
     return devices, serial_links, copper_links
 
@@ -568,11 +618,13 @@ def render(devices, serial_links, copper_links, macgen):
     parts = []
     for d in devices:
         if d["kind"] == "router":
-            frag = build_router(d["name"], d["config"], d["x"], d["y"], macgen)
+            frag = build_router(d["name"], d["config"], d["x"], d["y"], macgen,
+                                d["mem_addr"], d["dev_addr"])
         elif d["kind"] == "switch":
-            frag = build_switch(d["name"], d["config"], d["x"], d["y"])
+            frag = build_switch(d["name"], d["config"], d["x"], d["y"],
+                                d["mem_addr"], d["dev_addr"])
         else:
-            frag = build_host(d, macgen)
+            frag = build_host(d, macgen, d["mem_addr"], d["dev_addr"])
         parts.append(device_wrap(frag))
     devices_xml = "\n".join(parts)
 
