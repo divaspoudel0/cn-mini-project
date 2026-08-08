@@ -1,0 +1,53 @@
+enable
+configure terminal
+hostname R2-DIST-A11
+!
+interface Loopback0
+ ip address 1.1.1.2 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R1
+ ip address 10.10.4.2 255.255.255.252
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-R3
+ ip address 10.10.4.5 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface Serial0/1/0
+ description Link-to-R4
+ ip address 10.10.4.13 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface Serial0/1/1
+ description Link-to-R5
+ ip address 10.10.4.17 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface Serial0/2/0
+ description Link-to-R6
+ ip address 10.10.4.21 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+router ospf 1
+ router-id 1.1.1.2
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ no passive-interface Serial0/1/0
+ no passive-interface Serial0/1/1
+ no passive-interface Serial0/2/0
+ network 10.10.4.0 0.0.0.3 area 0
+ network 10.10.4.4 0.0.0.3 area 0
+ network 10.10.4.12 0.0.0.3 area 1
+ network 10.10.4.16 0.0.0.3 area 1
+ network 10.10.4.20 0.0.0.3 area 1
+ network 1.1.1.2 0.0.0.0 area 0
+!
+end
+write memory

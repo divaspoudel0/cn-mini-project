@@ -1,0 +1,44 @@
+enable
+configure terminal
+hostname R6-ACC-STUDENT
+!
+interface Loopback0
+ ip address 1.1.1.6 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R2
+ ip address 10.10.4.22 255.255.255.252
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-R5-Crossbackup
+ ip address 10.10.4.26 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/0
+ description Trunk-to-SW-STUDENT
+ no shutdown
+!
+interface GigabitEthernet0/0.30
+ description Student-VLAN
+ encapsulation dot1Q 30
+ ip address 10.10.2.1 255.255.255.0
+!
+router ospf 1
+ router-id 1.1.1.6
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ network 10.10.4.20 0.0.0.3 area 1
+ network 10.10.4.24 0.0.0.3 area 1
+ network 10.10.2.0 0.0.0.255 area 1
+ network 1.1.1.6 0.0.0.0 area 1
+!
+ip dhcp excluded-address 10.10.2.1 10.10.2.20
+ip dhcp pool STUDENT-POOL
+ network 10.10.2.0 255.255.255.0
+ default-router 10.10.2.1
+ dns-server 10.10.0.10 10.10.0.100
+!
+end
+write memory

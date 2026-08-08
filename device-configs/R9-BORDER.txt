@@ -1,0 +1,36 @@
+enable
+configure terminal
+hostname R9-BORDER
+!
+interface Loopback0
+ ip address 1.1.1.9 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R1
+ ip address 10.10.4.46 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-ISP
+ ip address 203.0.113.1 255.255.255.248
+ no shutdown
+!
+interface GigabitEthernet0/0
+ description DMZ-LAN
+ ip address 10.10.0.97 255.255.255.224
+ no shutdown
+!
+router ospf 1
+ router-id 1.1.1.9
+ passive-interface default
+ no passive-interface Serial0/0/0
+ network 10.10.4.44 0.0.0.3 area 0
+ network 10.10.0.96 0.0.0.31 area 0
+ network 1.1.1.9 0.0.0.0 area 0
+ default-information originate
+!
+ip route 0.0.0.0 0.0.0.0 203.0.113.2
+!
+end
+write memory

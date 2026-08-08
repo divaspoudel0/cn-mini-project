@@ -1,0 +1,53 @@
+enable
+configure terminal
+hostname R8-ACC-HOSTEL
+!
+interface Loopback0
+ ip address 1.1.1.8 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R3
+ ip address 10.10.4.34 255.255.255.252
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-R10-Branch
+ ip address 10.10.4.41 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface GigabitEthernet0/0
+ description Hostel-LAN
+ ip address 10.10.3.1 255.255.255.0
+ no shutdown
+!
+interface GigabitEthernet0/1
+ description Guest-WiFi-LAN
+ ip address 10.10.0.81 255.255.255.248
+ no shutdown
+!
+router ospf 1
+ router-id 1.1.1.8
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ network 10.10.4.32 0.0.0.3 area 2
+ network 10.10.4.40 0.0.0.3 area 2
+ network 10.10.3.0 0.0.0.255 area 2
+ network 10.10.0.80 0.0.0.7 area 2
+ network 1.1.1.8 0.0.0.0 area 2
+!
+ip dhcp excluded-address 10.10.3.1 10.10.3.20
+ip dhcp excluded-address 10.10.0.81 10.10.0.82
+ip dhcp pool HOSTEL-POOL
+ network 10.10.3.0 255.255.255.0
+ default-router 10.10.3.1
+ dns-server 10.10.0.10 10.10.0.100
+!
+ip dhcp pool GUEST-POOL
+ network 10.10.0.80 255.255.255.248
+ default-router 10.10.0.81
+ dns-server 10.10.0.10 10.10.0.100
+!
+end
+write memory

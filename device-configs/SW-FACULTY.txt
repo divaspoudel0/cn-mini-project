@@ -1,0 +1,32 @@
+enable
+configure terminal
+hostname SW-FACULTY
+!
+vlan 10
+ name ADMIN
+vlan 20
+ name FACULTY
+vlan 30
+ name STUDENT
+!
+interface GigabitEthernet0/1
+ description Trunk-to-R5
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+!
+interface GigabitEthernet0/2
+ description Trunk-to-SW-ADMIN
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+!
+interface range FastEthernet0/1-20
+ switchport mode access
+ switchport access vlan 20
+!
+interface FastEthernet0/24
+ description Admin-LAN-PC-VLAN10
+ switchport mode access
+ switchport access vlan 10
+!
+end
+write memory

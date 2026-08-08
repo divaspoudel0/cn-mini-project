@@ -1,0 +1,41 @@
+enable
+configure terminal
+hostname R7-ACC-ENG
+!
+interface Loopback0
+ ip address 1.1.1.7 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R3
+ ip address 10.10.4.30 255.255.255.252
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-R10-Branch
+ ip address 10.10.4.37 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface GigabitEthernet0/0
+ description Engineering-Dept-LAN
+ ip address 10.10.1.129 255.255.255.192
+ no shutdown
+!
+router ospf 1
+ router-id 1.1.1.7
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ network 10.10.4.28 0.0.0.3 area 2
+ network 10.10.4.36 0.0.0.3 area 2
+ network 10.10.1.128 0.0.0.63 area 2
+ network 1.1.1.7 0.0.0.0 area 2
+!
+ip dhcp excluded-address 10.10.1.129 10.10.1.140
+ip dhcp pool ENGIN-POOL
+ network 10.10.1.128 255.255.255.192
+ default-router 10.10.1.129
+ dns-server 10.10.0.10 10.10.0.100
+!
+end
+write memory

@@ -1,0 +1,36 @@
+enable
+configure terminal
+hostname R1-CORE
+!
+interface Loopback0
+ ip address 1.1.1.1 255.255.255.255
+!
+interface Serial0/0/0
+ description Link-to-R2
+ ip address 10.10.4.1 255.255.255.252
+ clock rate 64000
+ no shutdown
+!
+interface Serial0/0/1
+ description Link-to-R3
+ ip address 10.10.4.9 255.255.255.252
+ no shutdown
+!
+interface Serial0/1/0
+ description Link-to-R9-Border
+ ip address 10.10.4.45 255.255.255.252
+ no shutdown
+!
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface default
+ no passive-interface Serial0/0/0
+ no passive-interface Serial0/0/1
+ no passive-interface Serial0/1/0
+ network 10.10.4.0 0.0.0.3 area 0
+ network 10.10.4.8 0.0.0.3 area 0
+ network 10.10.4.44 0.0.0.3 area 0
+ network 1.1.1.1 0.0.0.0 area 0
+!
+end
+write memory
