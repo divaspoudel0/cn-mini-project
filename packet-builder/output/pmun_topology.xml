@@ -433,7 +433,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,ISP-RTR</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,ISP-RTR</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -883,7 +883,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R9-BORDER</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R9-BORDER</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -1406,7 +1406,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R1-CORE</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R1-CORE</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -2019,7 +2019,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R2-DIST-A1</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R2-DIST-A1</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -2551,7 +2551,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R3-DIST-A2</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R3-DIST-A2</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -3020,7 +3020,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R4-ACC-ADMIN</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R4-ACC-ADMIN</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -3479,7 +3479,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R5-ACC-FACULTY</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R5-ACC-FACULTY</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -3937,7 +3937,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R6-ACC-STUDENT</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R6-ACC-STUDENT</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -4392,7 +4392,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R7-ACC-ENG</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R7-ACC-ENG</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -4859,7 +4859,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R8-ACC-HOSTEL</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R8-ACC-HOSTEL</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -5313,7 +5313,7 @@
       <MEM_ADDR>210298488</MEM_ADDR>
       <DEV_ADDR>210112040</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,R10-ACC-BRANCH</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,R10-ACC-BRANCH</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -5850,7 +5850,7 @@
       <MEM_ADDR>429829368</MEM_ADDR>
       <DEV_ADDR>429339120</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,SW-ADMIN</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,SW-ADMIN</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -6392,7 +6392,7 @@
       <MEM_ADDR>429829368</MEM_ADDR>
       <DEV_ADDR>429339120</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,SW-FACULTY</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,SW-FACULTY</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -6924,7 +6924,7 @@
       <MEM_ADDR>429829368</MEM_ADDR>
       <DEV_ADDR>429339120</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,SW-STUDENT</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,SW-STUDENT</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -7447,7 +7447,7 @@
       <MEM_ADDR>429829368</MEM_ADDR>
       <DEV_ADDR>429339120</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,SW-SERVICES</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,SW-SERVICES</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -8895,7 +8895,7 @@ Hello, world!
       <MEM_ADDR>161929168</MEM_ADDR>
       <DEV_ADDR>160704992</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,DNS-SERVER</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,DNS-SERVER</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -10331,7 +10331,7 @@ Hello, world!
       <MEM_ADDR>161929168</MEM_ADDR>
       <DEV_ADDR>160704992</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,WEB-SERVER</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,WEB-SERVER</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -11767,7 +11767,7 @@ Hello, world!
       <MEM_ADDR>161929168</MEM_ADDR>
       <DEV_ADDR>160704992</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,MAIL-SERVER</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,MAIL-SERVER</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -13203,7 +13203,7 @@ Hello, world!
       <MEM_ADDR>161929168</MEM_ADDR>
       <DEV_ADDR>160704992</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,ISP-DNS</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Rack,ISP-DNS</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -13481,7 +13481,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,ADMIN-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,ADMIN-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -13759,7 +13759,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,ADMIN-PC2</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,ADMIN-PC2</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -14037,7 +14037,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,FACULTY-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,FACULTY-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -14315,7 +14315,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,STUDENT-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,STUDENT-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -14593,7 +14593,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,STUDENT-PC2</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,STUDENT-PC2</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -14871,7 +14871,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,LIBRARY-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,LIBRARY-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -15149,7 +15149,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,ENG-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,ENG-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -15427,7 +15427,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,HOSTEL-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,HOSTEL-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
    <DEVICE>
@@ -15705,7 +15705,7 @@ Hello, world!
       <MEM_ADDR>161923568</MEM_ADDR>
       <DEV_ADDR>158883312</DEV_ADDR>
      </LOGICAL>
-     <PHYSICAL translate="true">Intercity,BRANCH-PC</PHYSICAL>
+     <PHYSICAL translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet,Table,BRANCH-PC</PHYSICAL>
     </WORKSPACE>
    </DEVICE>
   </DEVICES>
@@ -16327,22 +16327,22 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
          <H>20</H>
          <PATH>../art/Background/grid_100x100.png</PATH>
          <CHILDREN>
-          <NODE>
-           <X>0</X>
-           <Y>0</Y>
-           <TYPE>5</TYPE>
-           <NAME translate="true">Table</NAME>
-           <SX>1</SX>
-           <SY>1</SY>
-           <W>0</W>
-           <H>0</H>
-           <PATH>../art/Background/grid_100x100.png</PATH>
-           <CHILDREN>
+                      <NODE>
+             <X>0</X>
+             <Y>0</Y>
+             <TYPE>5</TYPE>
+             <NAME translate="true">Table</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN>
             <NODE>
              <X>0</X>
              <Y>0</Y>
              <TYPE>6</TYPE>
-             <NAME translate="true">PC0</NAME>
+             <NAME translate="true">ADMIN-PC</NAME>
              <SX>1</SX>
              <SY>1</SY>
              <W>0</W>
@@ -16358,52 +16358,192 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
              <INIT_SY>0</INIT_SY>
              <BG_TILED>false</BG_TILED>
             </NODE>
+            <NODE>
+             <X>12</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">ADMIN-PC2</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>24</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">FACULTY-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>36</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">STUDENT-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>48</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">STUDENT-PC2</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>60</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">LIBRARY-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>72</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">ENG-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>84</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">HOSTEL-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>96</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">BRANCH-PC</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+             </CHILDREN>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+                      <NODE>
+             <X>0</X>
+             <Y>0</Y>
+             <TYPE>4</TYPE>
+             <NAME translate="true">Rack</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN>
             <NODE>
              <X>0</X>
              <Y>0</Y>
              <TYPE>6</TYPE>
-             <NAME translate="true">PC1</NAME>
-             <SX>1</SX>
-             <SY>1</SY>
-             <W>0</W>
-             <H>0</H>
-             <PATH>../art/Background/grid_100x100.png</PATH>
-             <CHILDREN/>
-             <MANUAL_SCALING>false</MANUAL_SCALING>
-             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
-             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
-             <INIT_WIDTH>0</INIT_WIDTH>
-             <INIT_HEIGHT>0</INIT_HEIGHT>
-             <INIT_SX>1</INIT_SX>
-             <INIT_SY>0</INIT_SY>
-             <BG_TILED>false</BG_TILED>
-            </NODE>
-           </CHILDREN>
-           <MANUAL_SCALING>false</MANUAL_SCALING>
-           <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
-           <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
-           <INIT_WIDTH>0</INIT_WIDTH>
-           <INIT_HEIGHT>0</INIT_HEIGHT>
-           <INIT_SX>1</INIT_SX>
-           <INIT_SY>0</INIT_SY>
-           <BG_TILED>false</BG_TILED>
-          </NODE>
-          <NODE>
-           <X>0</X>
-           <Y>0</Y>
-           <TYPE>4</TYPE>
-           <NAME translate="true">Rack</NAME>
-           <SX>1</SX>
-           <SY>1</SY>
-           <W>0</W>
-           <H>0</H>
-           <PATH>../art/Background/grid_100x100.png</PATH>
-           <CHILDREN>
-            <NODE>
-             <X>5</X>
-             <Y>0</Y>
-             <TYPE>6</TYPE>
-             <NAME translate="true">Server0</NAME>
+             <NAME translate="true">ISP-RTR</NAME>
              <SX>1</SX>
              <SY>1</SY>
              <W>0</W>
@@ -16420,10 +16560,10 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
              <BG_TILED>false</BG_TILED>
             </NODE>
             <NODE>
-             <X>25</X>
+             <X>12</X>
              <Y>0</Y>
              <TYPE>6</TYPE>
-             <NAME translate="true">Switch0</NAME>
+             <NAME translate="true">R9-BORDER</NAME>
              <SX>1</SX>
              <SY>1</SY>
              <W>0</W>
@@ -16440,10 +16580,10 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
              <BG_TILED>false</BG_TILED>
             </NODE>
             <NODE>
-             <X>33</X>
+             <X>24</X>
              <Y>0</Y>
              <TYPE>6</TYPE>
-             <NAME translate="true">Router1</NAME>
+             <NAME translate="true">R1-CORE</NAME>
              <SX>1</SX>
              <SY>1</SY>
              <W>0</W>
@@ -16459,16 +16599,336 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
              <INIT_SY>0</INIT_SY>
              <BG_TILED>false</BG_TILED>
             </NODE>
-           </CHILDREN>
-           <MANUAL_SCALING>false</MANUAL_SCALING>
-           <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
-           <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
-           <INIT_WIDTH>0</INIT_WIDTH>
-           <INIT_HEIGHT>0</INIT_HEIGHT>
-           <INIT_SX>1</INIT_SX>
-           <INIT_SY>0</INIT_SY>
-           <BG_TILED>false</BG_TILED>
-          </NODE>
+            <NODE>
+             <X>36</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R2-DIST-A1</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>48</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R3-DIST-A2</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>60</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R4-ACC-ADMIN</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>72</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R5-ACC-FACULTY</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>84</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R6-ACC-STUDENT</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>96</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R7-ACC-ENG</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>108</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R8-ACC-HOSTEL</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>120</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">R10-ACC-BRANCH</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>132</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">SW-ADMIN</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>144</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">SW-FACULTY</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>156</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">SW-STUDENT</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>168</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">SW-SERVICES</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>180</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">DNS-SERVER</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>192</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">WEB-SERVER</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>204</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">MAIL-SERVER</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>216</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">ISP-DNS</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+             </CHILDREN>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
          </CHILDREN>
          <MANUAL_SCALING>false</MANUAL_SCALING>
          <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
@@ -16527,41 +16987,7 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
    <ENABLED>false</ENABLED>
   </BUILDING_GRID>
   <GRID_COLOR>#ffffff</GRID_COLOR>
-  <NOTES>
-   <NOTE uuid="{6f9812e6-bc18-4792-af9a-5980af5be18b}">
-    <X>257</X>
-    <Y>40</Y>
-    <Z>40000</Z>
-    <TEXT translate="true">1. Switch to Similation mode
-
-2. Do dhcp request from PC0
-
-3. DHCP Request fails and PC0 gets an APIPA address which is 169.254.213.152
-(AND product of 169.254.0.0 &amp;&amp; the last 2 bytes of the port Mac Address)
-
-4. Gratuitous Arp is sent out from PC0 to check for duplicate address.
-
-5. From PC1, request DHCP and expect PC1 to also get the address 169.254.213.152
-( since the last 2 bytes of the port mac address is the same as in PC0)
-
-6. PC1 sends out Gratuious ARP and gets a reply.
-
-7. PC1 now gets a new APIPA address 169.254.213.153
-
-8. PC1 sends out another Gratuitous ARP and no reply so it keeps the address.</TEXT>
-    <NOTECLUSTERID>1-1</NOTECLUSTERID>
-   </NOTE>
-   <NOTE uuid="{480ab3f9-194e-41fe-8733-1cb996a9d6ce}">
-    <X>263</X>
-    <Y>295</Y>
-    <Z>40000</Z>
-    <TEXT translate="true">On Router1, apply the command under interface fa0/0 mode:
-Router(config-if)#ip address dhcp 
-
-The interface shouldn't get an APIPA address</TEXT>
-    <NOTECLUSTERID>1-1</NOTECLUSTERID>
-   </NOTE>
-  </NOTES>
+  <NOTES></NOTES>
  </PHYSICALWORKSPACE>
  <FILTERS HSRPv6="no" TFTP="no" SSH="no" DTP="no" RADIUS="no" ARP="yes" TCP="no" EIGRP="no" UDP="no" NETFLOW="no" OSPFv6="no" NTP="no" ICMPv6="no" BGP="no" HTTPS="no" Telnet="no" SCCP="no" IPSec="no" ICMP="no" STP="no" DHCP="yes" CDP="no" NDP="no" POP3="no" H.323="no" RIPng="no" RTP="no" HSRP="no" ISAKMP="no" SMTP="no" DNS="no" FTP="no" EIGRPv6="no" LACP="no" SNMP="no" DHCPv6="yes" VTP="no" HTTP="no" OSPF="no" PAgP="no" TACACS="no" RIP="no" SYSLOG="no">
   <ACL_FILTERS>
