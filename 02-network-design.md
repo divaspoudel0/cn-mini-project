@@ -33,10 +33,14 @@ plus an ISP-internal LAN `198.51.100.0/28` hosting the upstream DNS resolver.
 
 Distinct sizes present: /24, /25, /26, /27, /28, /29 → **6 sizes**, requirement met with one to spare.
 
-VLANs 10/20/30 are trunked across **SW-Admin, SW-Faculty, SW-Student** (three different switches) —
-satisfies "≥3 VLANs extended via ≥3 switches." Put VLAN 10 also reachable from SW-Faculty via trunk
-(inter-switch link) so at least one VLAN genuinely spans more than one switch, not just "exists on 3
-switches independently" — that's the part graders actually check.
+VLANs 10/20/30 are defined on all three access switches (SW-ADMIN, SW-FACULTY, SW-STUDENT) and the three
+switches are **interconnected by trunks** (SW-ADMIN↔SW-FACULTY and SW-FACULTY↔SW-STUDENT) carrying
+VLANs 10,20,30 — so every VLAN is genuinely reachable from all three switches, not just "exists on 3
+switches independently." That is exactly what the "3 VLANs extended via at least 3 switches" line in the
+requirement checks.
+
+Two additional server switches are used but are not part of the VLAN requirement: **SW-SERVICES**
+(Server-Farm behind R4, Area 1) and **SW-DMZ** (DMZ-LAN behind R9, Area 0).
 
 ## 3. Point-to-point links (10.10.4.0/24, carved as /30s — not counted toward the 9 LAN networks)
 
@@ -110,7 +114,12 @@ visual clarity; the addressing doesn't care either way, just keep `03-build-inst
 | DNS-2 | Caching + authoritative (redundant) | DMZ-LAN (10.10.0.96/27) | 10.10.0.100 |
 | WEB-1 | `www.pmun.edu.np` | Server-Farm (10.10.0.0/27) | 10.10.0.11 |
 | WEB-2 | `intranet.pmun.edu.np` | DMZ-LAN (10.10.0.96/27) | 10.10.0.101 |
+| MAIL | `mail.pmun.edu.np` (SMTP/POP3 demo) | Server-Farm (10.10.0.0/27) | 10.10.0.12 |
 | ISP-DNS | Upstream/public resolver, forwards anything outside `pmun.edu.np` | ISP-internal LAN (198.51.100.0/28) | 198.51.100.2 |
+
+**Two Web servers on two different subnets** (Server-Farm 10.10.0.0/27 and DMZ 10.10.0.96/27) and **two
+internal DNS servers on two different LANs** — both explicit requirement lines, both satisfied inside
+the generated `.pkt`.
 
 DNS-1 and DNS-2 are configured to forward non-local queries to ISP-DNS (198.51.100.2) — this is the
 "additional level of DNS server in the upstream ISP's network" requirement.

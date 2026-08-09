@@ -10,8 +10,10 @@ Generic 2960 switches.
 
 - 11 routers: R1–R10 + ISP-RTR. Arrange R1/R2/R3 in a visual triangle in the middle (core), R4–R6
   around R2, R7/R8/R10 around R3, R9 + ISP-RTR off to one side (edge).
-- 3 switches: SW-ADMIN, SW-FACULTY, SW-STUDENT.
-- 2 servers on Server-Farm segment, 2 servers on DMZ segment, 1 server (ISP-DNS) on the ISP side.
+- 5 switches: SW-ADMIN, SW-FACULTY, SW-STUDENT (VLAN access switches, trunked together),
+  SW-SERVICES (Server-Farm behind R4), SW-DMZ (DMZ-LAN behind R9).
+- 3 servers on Server-Farm (DNS-1, WEB-1, MAIL), 2 servers on DMZ (DNS-2, WEB-2), 1 server (ISP-DNS)
+  on the ISP side.
 - PCs: put at least 2–3 PCs per LAN so DHCP has something to demo. Not graded individually but makes
   the demo/viva much more convincing than empty LANs.
 
@@ -37,9 +39,11 @@ rate on the DCE side (Packet Tracer tells you which end is DCE when you check th
    Server-Farm switch and Library switch (or just directly to end devices for small LANs — a /27 or /29
    LAN doesn't need its own dedicated switch, you can hang PCs straight off a small unmanaged switch or
    even directly if only 1–2 hosts, but use a switch for realism).
-6. R5 → SW-FACULTY, R6 → SW-STUDENT. Also cable SW-ADMIN↔SW-FACULTY as an inter-switch trunk so VLAN 10
-   genuinely extends across two switches (this is the specific thing the requirement is checking for).
-7. R7, R8, R9, R10 each get a switch or direct connection to their LAN's PCs/servers as appropriate.
+6. R5 → SW-FACULTY, R6 → SW-STUDENT. Also cable SW-ADMIN↔SW-FACULTY (G0/2 to G0/2) and
+   SW-FACULTY↔SW-STUDENT (Fa0/21 to G0/2) as inter-switch trunks so VLAN 10/20/30 each genuinely extend
+   across all three switches (this is the specific thing the requirement is checking for).
+7. R7, R8, R9, R10 each get a switch or direct connection to their LAN's PCs/servers as appropriate:
+   R9 → SW-DMZ → DNS-2/WEB-2, and R4 → SW-SERVICES → DNS-1/WEB-1/MAIL.
 
 ## 4. VLAN + trunk setup (on SW-ADMIN, SW-FACULTY, SW-STUDENT)
 - Create VLAN 10 (ADMIN), VLAN 20 (FACULTY), VLAN 30 (STUDENT) on all three switches — same VLAN

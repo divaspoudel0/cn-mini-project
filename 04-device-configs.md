@@ -259,8 +259,30 @@ interface range FastEthernet0/1-20
 end
 write memory
 ```
-SW-FACULTY: same VLANs, trunk ports toward R5 and toward SW-ADMIN, access ports default to VLAN 20.
-SW-STUDENT: same VLANs, trunk port toward R6, access ports default to VLAN 30.
+SW-FACULTY: same VLANs, trunk ports toward R5 (G0/1), toward SW-ADMIN (G0/2) and toward SW-STUDENT
+(Fa0/21); access ports default to VLAN 20. SW-STUDENT: same VLANs, trunk ports toward R6 (G0/1) and
+toward SW-FACULTY (G0/2); access ports default to VLAN 30. The two inter-switch trunks carry VLANs
+10,20,30 so every VLAN is reachable from all three switches.
+
+---
+## SW-SERVICES / SW-DMZ (plain access switches, no VLANs/trunks — server segments only)
+```
+enable
+configure terminal
+hostname SW-SERVICES       (SW-DMZ for the DMZ switch behind R9)
+!
+interface GigabitEthernet0/1
+ description Uplink-to-router
+ switchport mode access
+!
+interface range FastEthernet0/1-4
+ switchport mode access
+!
+end
+write memory
+```
+SW-SERVICES: G0/1 → R4 G0/1; Fa0/1 → DNS-1, Fa0/2 → WEB-1, Fa0/3 → MAIL.
+SW-DMZ: G0/1 → R9 G0/0; Fa0/1 → DNS-2, Fa0/2 → WEB-2.
 
 ---
 ## Config checklist before you consider a device "done"

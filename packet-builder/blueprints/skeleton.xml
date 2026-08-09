@@ -6,7 +6,7 @@
   <LINKS>
   </LINKS>
   <SHAPETESTS/>
-  <DESCRIPTION translate="true">PMUN (Pulchowk Metropolitan University Network) - 11 routers, 3 LAN switches, secured services, OSPF + DHCP</DESCRIPTION>
+  <DESCRIPTION translate="true">PMUN (Pulchowk Metropolitan University Network) - 11 routers, 3 LAN + server/DMZ switches, 3-area OSPF, 2 DNS + 2 Web servers, DHCP</DESCRIPTION>
  </NETWORK>
  <SCENARIOSET>
   <SCENARIO>

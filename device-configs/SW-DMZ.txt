@@ -1,0 +1,13 @@
+enable
+configure terminal
+hostname SW-DMZ
+!
+interface GigabitEthernet0/1
+ description Uplink-to-R9
+ switchport mode access
+!
+interface range FastEthernet0/1-4
+ switchport mode access
+!
+end
+write memory

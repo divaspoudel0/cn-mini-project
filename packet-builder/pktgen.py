@@ -379,28 +379,32 @@ def topology():
         devices.append(d)
 
     # ---- routers ----------------------------------------------------------
+    # Layout: DMZ + ISP up top, AREA 0 backbone in the middle,
+    # AREA 1 on the left, AREA 2 on the right -- devices are grouped by
+    # OSPF area so the topology reads as three visually separate zones.
     for name, fname, x, y in (
-            ("ISP-RTR", "ISP-RTR.txt", 640, 90),
-            ("R9-BORDER", "R9-BORDER.txt", 300, 90),
-            ("R1-CORE", "R1-CORE.txt", 120, 140),
-            ("R2-DIST-A1", "R2-DIST-A1.txt", 60, 280),
-            ("R3-DIST-A2", "R3-DIST-A2.txt", 360, 280),
-            ("R4-ACC-ADMIN", "R4-ACC-ADMIN.txt", 40, 450),
-            ("R5-ACC-FACULTY", "R5-ACC-FACULTY.txt", 130, 450),
-            ("R6-ACC-STUDENT", "R6-ACC-STUDENT.txt", 220, 450),
-            ("R7-ACC-ENG", "R7-ACC-ENG.txt", 430, 450),
-            ("R8-ACC-HOSTEL", "R8-ACC-HOSTEL.txt", 520, 450),
-            ("R10-ACC-BRANCH", "R10-ACC-BRANCH.txt", 560, 620),
+            ("ISP-RTR", "ISP-RTR.txt", 680, 90),
+            ("R9-BORDER", "R9-BORDER.txt", 360, 90),
+            ("R1-CORE", "R1-CORE.txt", 200, 230),
+            ("R2-DIST-A1", "R2-DIST-A1.txt", 90, 350),
+            ("R3-DIST-A2", "R3-DIST-A2.txt", 310, 350),
+            ("R4-ACC-ADMIN", "R4-ACC-ADMIN.txt", 40, 470),
+            ("R5-ACC-FACULTY", "R5-ACC-FACULTY.txt", 150, 470),
+            ("R6-ACC-STUDENT", "R6-ACC-STUDENT.txt", 260, 470),
+            ("R7-ACC-ENG", "R7-ACC-ENG.txt", 420, 470),
+            ("R8-ACC-HOSTEL", "R8-ACC-HOSTEL.txt", 520, 470),
+            ("R10-ACC-BRANCH", "R10-ACC-BRANCH.txt", 470, 600),
     ):
         add({"name": name, "kind": "router", "config": _load_cfg(fname),
              "x": x, "y": y})
 
     # ---- switches ----------------------------------------------------------
     for name, fname, x, y in (
-            ("SW-ADMIN", "SW-ADMIN.txt", 40, 560),
-            ("SW-FACULTY", "SW-FACULTY.txt", 130, 560),
-            ("SW-STUDENT", "SW-STUDENT.txt", 220, 560),
-            ("SW-SERVICES", "SW-SERVICES.txt", 320, 560),
+            ("SW-ADMIN", "SW-ADMIN.txt", 40, 570),
+            ("SW-FACULTY", "SW-FACULTY.txt", 150, 570),
+            ("SW-STUDENT", "SW-STUDENT.txt", 260, 570),
+            ("SW-SERVICES", "SW-SERVICES.txt", 40, 670),
+            ("SW-DMZ", "SW-DMZ.txt", 360, 200),
     ):
         add({"name": name, "kind": "switch", "config": _load_cfg(fname),
              "x": x, "y": y})
@@ -408,25 +412,36 @@ def topology():
     # ---- hosts --------------------------------------------------------------
     hosts = [
         # name, kind, ip, mask, gw, dns, dhcp, x, y, records
-        ("DNS-SERVER", "server", "10.10.0.10", "255.255.255.224", "10.10.0.1",
-         "10.10.0.10", False, 10, 360,
+        ("DNS-1", "server", "10.10.0.10", "255.255.255.224", "10.10.0.1",
+         "10.10.0.10", False, 20, 750,
          [("dns.pmun.edu.np", "10.10.0.10"),
-          ("www.pmun.edu.np", "10.10.0.100")]),
-        ("WEB-SERVER", "server", "10.10.0.100", "255.255.255.224", "10.10.0.97",
-         "10.10.0.10", False, 400, 90, [("web.pmun.edu.np", "10.10.0.100")]),
-        ("MAIL-SERVER", "server", "10.10.0.11", "255.255.255.224", "10.10.0.1",
-         "10.10.0.10", False, 70, 120, [("mail.pmun.edu.np", "10.10.0.11")]),
-        ("ISP-DNS", "server", "198.51.100.10", "255.255.255.240", "198.51.100.1",
-         "198.51.100.10", False, 500, 60, [("ns.isp.net", "198.51.100.10")]),
-        ("ADMIN-PC", "pc", "", "", "", "", True, 20, 600),
-        ("ADMIN-PC2", "pc", "", "", "", "", True, 40, 630),
-        ("FACULTY-PC", "pc", "", "", "", "", True, 110, 600),
-        ("STUDENT-PC", "pc", "", "", "", "", True, 200, 600),
-        ("STUDENT-PC2", "pc", "", "", "", "", True, 220, 630),
-        ("LIBRARY-PC", "pc", "", "", "", "", True, 20, 680),
-        ("ENG-PC", "pc", "", "", "", "", True, 400, 600),
-        ("HOSTEL-PC", "pc", "", "", "", "", True, 500, 600),
-        ("BRANCH-PC", "pc", "", "", "", "", True, 540, 670),
+          ("www.pmun.edu.np", "10.10.0.11"),
+          ("intranet.pmun.edu.np", "10.10.0.101"),
+          ("mail.pmun.edu.np", "10.10.0.12")]),
+        ("WEB-1", "server", "10.10.0.11", "255.255.255.224", "10.10.0.1",
+         "10.10.0.10", False, 90, 750),
+        ("MAIL-SERVER", "server", "10.10.0.12", "255.255.255.224", "10.10.0.1",
+         "10.10.0.10", False, 160, 750),
+        ("DNS-2", "server", "10.10.0.100", "255.255.255.224", "10.10.0.97",
+         "10.10.0.10", False, 300, 290,
+         [("dns.pmun.edu.np", "10.10.0.10"),
+          ("www.pmun.edu.np", "10.10.0.11"),
+          ("intranet.pmun.edu.np", "10.10.0.101"),
+          ("mail.pmun.edu.np", "10.10.0.12")]),
+        ("WEB-2", "server", "10.10.0.101", "255.255.255.224", "10.10.0.97",
+         "10.10.0.10", False, 420, 290),
+        ("ISP-DNS", "server", "198.51.100.2", "255.255.255.240", "198.51.100.1",
+         "198.51.100.2", False, 680, 200, [("ns.isp.net", "198.51.100.2")]),
+        ("ADMIN-PC", "pc", "", "", "", "", True, 20, 640),
+        ("ADMIN-PC2", "pc", "", "", "", "", True, 60, 640),
+        ("ADMIN-PC3", "pc", "", "", "", "", True, 175, 640),
+        ("FACULTY-PC", "pc", "", "", "", "", True, 130, 640),
+        ("STUDENT-PC", "pc", "", "", "", "", True, 240, 640),
+        ("STUDENT-PC2", "pc", "", "", "", "", True, 280, 640),
+        ("LIBRARY-PC", "pc", "", "", "", "", True, 90, 540),
+        ("ENG-PC", "pc", "", "", "", "", True, 400, 560),
+        ("HOSTEL-PC", "pc", "", "", "", "", True, 500, 560),
+        ("BRANCH-PC", "pc", "", "", "", "", True, 450, 690),
     ]
     for h in hosts:
         rec = {
@@ -481,18 +496,28 @@ def topology():
 
     # ---- copper --------------------------------------------------------------
     copper = [
+        # access routers -> their switch
         ("R4-ACC-ADMIN", "GigabitEthernet0/0", "SW-ADMIN", "GigabitEthernet0/1"),
         ("R5-ACC-FACULTY", "GigabitEthernet0/0", "SW-FACULTY", "GigabitEthernet0/1"),
         ("R6-ACC-STUDENT", "GigabitEthernet0/0", "SW-STUDENT", "GigabitEthernet0/1"),
+        # inter-switch trunks: all three switches carry VLANs 10/20/30
         ("SW-ADMIN", "GigabitEthernet0/2", "SW-FACULTY", "GigabitEthernet0/2"),
+        ("SW-FACULTY", "FastEthernet0/21", "SW-STUDENT", "GigabitEthernet0/2"),
+        # server farm (Area 1, R4)
         ("R4-ACC-ADMIN", "GigabitEthernet0/1", "SW-SERVICES", "GigabitEthernet0/1"),
-        ("SW-SERVICES", "FastEthernet0/1", "DNS-SERVER", "FastEthernet0"),
-        ("SW-SERVICES", "FastEthernet0/2", "MAIL-SERVER", "FastEthernet0"),
-        ("R9-BORDER", "GigabitEthernet0/0", "WEB-SERVER", "FastEthernet0"),
+        ("SW-SERVICES", "FastEthernet0/1", "DNS-1", "FastEthernet0"),
+        ("SW-SERVICES", "FastEthernet0/2", "WEB-1", "FastEthernet0"),
+        ("SW-SERVICES", "FastEthernet0/3", "MAIL-SERVER", "FastEthernet0"),
+        # DMZ (Area 0, R9): DNS-2 + WEB-2 on the same DMZ-LAN segment
+        ("R9-BORDER", "GigabitEthernet0/0", "SW-DMZ", "GigabitEthernet0/1"),
+        ("SW-DMZ", "FastEthernet0/1", "DNS-2", "FastEthernet0"),
+        ("SW-DMZ", "FastEthernet0/2", "WEB-2", "FastEthernet0"),
+        # PCs
         ("R4-ACC-ADMIN", "GigabitEthernet0/2", "LIBRARY-PC", "FastEthernet0"),
         ("SW-ADMIN", "FastEthernet0/1", "ADMIN-PC", "FastEthernet0"),
         ("SW-ADMIN", "FastEthernet0/2", "ADMIN-PC2", "FastEthernet0"),
         ("SW-FACULTY", "FastEthernet0/1", "FACULTY-PC", "FastEthernet0"),
+        ("SW-FACULTY", "FastEthernet0/24", "ADMIN-PC3", "FastEthernet0"),
         ("SW-STUDENT", "FastEthernet0/1", "STUDENT-PC", "FastEthernet0"),
         ("SW-STUDENT", "FastEthernet0/2", "STUDENT-PC2", "FastEthernet0"),
         ("R7-ACC-ENG", "GigabitEthernet0/0", "ENG-PC", "FastEthernet0"),
@@ -616,6 +641,31 @@ def build_workspace(xml, devices):
 
 
 
+def _notes_block():
+    """Area/zone labels shown in the logical workspace. Uses the same NOTE
+    element structure as genuine PT saves (uuid/X/Y/Z/TEXT/NOTECLUSTERID)."""
+    import uuid
+    labels = [
+        (140, 190, "OSPF AREA 0 - BACKBONE (R1 R2 R3 R9)"),
+        (30, 420, "OSPF AREA 1 (R2 R4 R5 R6)"),
+        (410, 420, "OSPF AREA 2 (R3 R7 R8 R10)"),
+        (300, 160, "DMZ-LAN 10.10.0.96/27 (DNS-2, WEB-2)"),
+        (620, 50, "UPSTREAM ISP - static route only"),
+        (20, 720, "SERVER FARM 10.10.0.0/27 (DNS-1, WEB-1, MAIL)"),
+    ]
+    parts = []
+    for x, y, text in labels:
+        parts.append(
+            "    <NOTE uuid=\"{%s}\">\n"
+            "     <X>%d</X>\n"
+            "     <Y>%d</Y>\n"
+            "     <Z>40000</Z>\n"
+            "     <TEXT translate=\"true\">%s</TEXT>\n"
+            "     <NOTECLUSTERID>1-1</NOTECLUSTERID>\n"
+            "    </NOTE>" % (uuid.uuid4(), x, y, text))
+    return "<NOTES>\n%s\n  </NOTES>" % "\n".join(parts)
+
+
 def render(devices, serial_links, copper_links, macgen):
     parts = []
     for d in devices:
@@ -641,8 +691,7 @@ def render(devices, serial_links, copper_links, macgen):
                       lambda m: m.group(1) + "\n" + links_xml + "\n  " + m.group(3),
                       skeleton, flags=re.S)
     skeleton = build_workspace(skeleton, devices)
-    skeleton = re.sub(r"<NOTES>.*?</NOTES>", "<NOTES></NOTES>",
-                      skeleton, flags=re.S)
+    skeleton = re.sub(r"<NOTES>.*?</NOTES>", _notes_block(), skeleton, flags=re.S)
     return skeleton
 
 

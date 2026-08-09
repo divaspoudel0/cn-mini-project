@@ -21,8 +21,11 @@ requirement — if it fails, that requirement isn't actually satisfied no matter
 - [ ] Confirm `ISP-RTR` has **no** OSPF process running (`show ip protocols` should show nothing, or explicitly confirm no neighbor relationship exists between R9 and ISP-RTR beyond the static routes).
 
 ## VLANs
-- [ ] From an Admin-LAN PC on SW-ADMIN, ping an Admin-LAN PC connected to SW-FACULTY (same VLAN 10,
-      different physical switch) — this is the actual proof that VLAN 10 "extends across switches."
+- [ ] From ADMIN-PC on SW-ADMIN, ping ADMIN-PC3 on SW-FACULTY (both VLAN 10, different physical switch,
+      connected via the SW-ADMIN↔SW-FACULTY trunk) — the actual proof that VLAN 10 "extends across switches."
+- [ ] On each of SW-ADMIN / SW-FACULTY / SW-STUDENT: `show vlan` lists VLANs 10, 20, 30 and `show
+      interfaces trunk` shows the inter-switch trunks carrying them — all three VLANs are trunked across
+      all three switches.
 - [ ] Confirm a Faculty-LAN PC (VLAN 20) **cannot** ping directly into VLAN 10 without going through R4/R5's
       routing — VLANs should be isolated at Layer 2, only reachable via inter-VLAN routing. If it works
       at Layer 2 without hitting a router, your trunk/access config is wrong somewhere.
