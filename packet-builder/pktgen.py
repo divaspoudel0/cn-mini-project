@@ -469,13 +469,15 @@ def topology():
         fpa, tpa = make_port_addrs()
         a_is_dce = (a, pa) in dce
         if a_is_dce:
-            serial_links.append(serial_link(index[a], pa, index[b], pb, 0, pa,
+            serial_links.append(serial_link(index[a], pa, index[b], pb,
+                                            index[a], pa,
                                             fa["dev_addr"], ta["dev_addr"],
                                             fpa, tpa))
         else:
-            serial_links.append(serial_link(index[a], pa, index[b], pb, 1, pb,
-                                            fa["dev_addr"], ta["dev_addr"],
-                                            fpa, tpa))
+            serial_links.append(serial_link(index[b], pb, index[a], pa,
+                                            index[b], pb,
+                                            ta["dev_addr"], fa["dev_addr"],
+                                            tpa, fpa))
 
     # ---- copper --------------------------------------------------------------
     copper = [
