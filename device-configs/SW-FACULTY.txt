@@ -9,7 +9,7 @@ vlan 20
 vlan 30
  name STUDENT
 !
-interface GigabitEthernet0/1
+interface GigabitEthernet0/0
  description Trunk-to-R5
  switchport mode trunk
  switchport trunk allowed vlan 10,20,30

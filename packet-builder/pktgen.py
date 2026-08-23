@@ -253,11 +253,14 @@ def host_port_fill(xml, ip, mask, gw, dns, dhcp):
         p = re.sub(r"<PORT_DHCP_ENABLE>[^<]*</PORT_DHCP_ENABLE>",
                    "<PORT_DHCP_ENABLE>%s</PORT_DHCP_ENABLE>"
                    % ("true" if dhcp else "false"), p)
-        if dhcp:
+        if dhcp and not ip:
+            # pure DHCP client: ship with empty address fields
             p = re.sub(r"<IP>[^<]*</IP>", "<IP/>", p)
             p = re.sub(r"<SUBNET>[^<]*</SUBNET>", "<SUBNET/>", p)
             p = re.sub(r"<PORT_GATEWAY>[^<]*</PORT_GATEWAY>", "<PORT_GATEWAY/>", p)
         else:
+            # static config or a seeded DHCP lease (how a genuine PT save
+            # looks after the client acquired its address from the pool)
             p = re.sub(r"<IP>[^<]*</IP>", "<IP>%s</IP>" % ip, p)
             p = re.sub(r"<SUBNET>[^<]*</SUBNET>", "<SUBNET>%s</SUBNET>" % mask, p)
             p = re.sub(r"<PORT_GATEWAY>[^<]*</PORT_GATEWAY>",
@@ -432,16 +435,28 @@ def topology():
          "10.10.0.10", False, 420, 290),
         ("ISP-DNS", "server", "198.51.100.2", "255.255.255.240", "198.51.100.1",
          "198.51.100.2", False, 680, 200, [("ns.isp.net", "198.51.100.2")]),
-        ("ADMIN-PC", "pc", "", "", "", "", True, 20, 640),
-        ("ADMIN-PC2", "pc", "", "", "", "", True, 60, 640),
-        ("ADMIN-PC3", "pc", "", "", "", "", True, 175, 640),
-        ("FACULTY-PC", "pc", "", "", "", "", True, 130, 640),
-        ("STUDENT-PC", "pc", "", "", "", "", True, 240, 640),
-        ("STUDENT-PC2", "pc", "", "", "", "", True, 280, 640),
-        ("LIBRARY-PC", "pc", "", "", "", "", True, 90, 540),
-        ("ENG-PC", "pc", "", "", "", "", True, 400, 560),
-        ("HOSTEL-PC", "pc", "", "", "", "", True, 500, 560),
-        ("BRANCH-PC", "pc", "", "", "", "", True, 450, 690),
+        # PCs: DHCP clients with seeded leases (ip/mask/gw/dns as acquired
+        # from the matching router pool; leases sit outside excluded ranges)
+        ("ADMIN-PC", "pc", "10.10.0.141", "255.255.255.128", "10.10.0.129",
+         "10.10.0.10", True, 20, 640),
+        ("ADMIN-PC2", "pc", "10.10.0.142", "255.255.255.128", "10.10.0.129",
+         "10.10.0.10", True, 60, 640),
+        ("ADMIN-PC3", "pc", "10.10.0.143", "255.255.255.128", "10.10.0.129",
+         "10.10.0.10", True, 175, 640),
+        ("FACULTY-PC", "pc", "10.10.1.11", "255.255.255.128", "10.10.1.1",
+         "10.10.0.10", True, 130, 640),
+        ("STUDENT-PC", "pc", "10.10.2.21", "255.255.255.0", "10.10.2.1",
+         "10.10.0.10", True, 240, 640),
+        ("STUDENT-PC2", "pc", "10.10.2.22", "255.255.255.0", "10.10.2.1",
+         "10.10.0.10", True, 280, 640),
+        ("LIBRARY-PC", "pc", "10.10.0.41", "255.255.255.224", "10.10.0.33",
+         "10.10.0.10", True, 90, 540),
+        ("ENG-PC", "pc", "10.10.1.141", "255.255.255.192", "10.10.1.129",
+         "10.10.0.10", True, 400, 560),
+        ("HOSTEL-PC", "pc", "10.10.3.21", "255.255.255.0", "10.10.3.1",
+         "10.10.0.10", True, 500, 560),
+        ("BRANCH-PC", "pc", "10.10.0.71", "255.255.255.240", "10.10.0.65",
+         "10.10.0.10", True, 450, 690),
     ]
     for h in hosts:
         rec = {
@@ -711,9 +726,10 @@ def main(outdir=".", twodir=None):
     xml_path = os.path.join(outdir, "pmun_topology.xml")
     open(xml_path, "w", encoding="utf-8").write(xml)
 
-    # encrypt
+    # encrypt — pka2xml ships next to this script; fall back to /tmp copy
     if twodir is None:
-        twodir = "/tmp/opencode/pka2xml"
+        twodir = HERE if os.path.exists(
+            os.path.join(HERE, "pka2xml.py")) else "/tmp/opencode/pka2xml"
     sys.path.insert(0, os.path.abspath(twodir))
     from pka2xml import encrypt_pka, decrypt_pka
     pkg = encrypt_pka(xml.encode("utf-8"))

@@ -5746,7 +5746,7 @@
       <LINE>vlan 30</LINE>
       <LINE> name STUDENT</LINE>
       <LINE>!</LINE>
-      <LINE>interface GigabitEthernet0/1</LINE>
+      <LINE>interface GigabitEthernet0/0</LINE>
       <LINE> description Trunk-to-R4</LINE>
       <LINE> switchport mode trunk</LINE>
       <LINE> switchport trunk allowed vlan 10,20,30</LINE>
@@ -6283,7 +6283,7 @@
       <LINE>vlan 30</LINE>
       <LINE> name STUDENT</LINE>
       <LINE>!</LINE>
-      <LINE>interface GigabitEthernet0/1</LINE>
+      <LINE>interface GigabitEthernet0/0</LINE>
       <LINE> description Trunk-to-R5</LINE>
       <LINE> switchport mode trunk</LINE>
       <LINE> switchport trunk allowed vlan 10,20,30</LINE>
@@ -6830,12 +6830,12 @@
       <LINE>vlan 30</LINE>
       <LINE> name STUDENT</LINE>
       <LINE>!</LINE>
-      <LINE>interface GigabitEthernet0/1</LINE>
+      <LINE>interface GigabitEthernet0/0</LINE>
       <LINE> description Trunk-to-R6</LINE>
       <LINE> switchport mode trunk</LINE>
       <LINE> switchport trunk allowed vlan 10,20,30</LINE>
       <LINE>!</LINE>
-      <LINE>interface GigabitEthernet0/2</LINE>
+      <LINE>interface FastEthernet0/21</LINE>
       <LINE> description Trunk-to-SW-FACULTY</LINE>
       <LINE> switchport mode trunk</LINE>
       <LINE> switchport trunk allowed vlan 10,20,30</LINE>
@@ -16648,10 +16648,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.0.141</IP>
+         <SUBNET>255.255.255.128</SUBNET>
+         <PORT_GATEWAY>10.10.0.129</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -16699,7 +16699,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>ADMIN-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.0.129</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -16926,10 +16926,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.0.142</IP>
+         <SUBNET>255.255.255.128</SUBNET>
+         <PORT_GATEWAY>10.10.0.129</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -16977,7 +16977,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>ADMIN-PC2</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.0.129</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -17204,10 +17204,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.0.143</IP>
+         <SUBNET>255.255.255.128</SUBNET>
+         <PORT_GATEWAY>10.10.0.129</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -17255,7 +17255,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>ADMIN-PC3</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.0.129</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -17482,10 +17482,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.1.11</IP>
+         <SUBNET>255.255.255.128</SUBNET>
+         <PORT_GATEWAY>10.10.1.1</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -17533,7 +17533,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>FACULTY-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.1.1</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -17760,10 +17760,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.2.21</IP>
+         <SUBNET>255.255.255.0</SUBNET>
+         <PORT_GATEWAY>10.10.2.1</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -17811,7 +17811,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>STUDENT-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.2.1</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -18038,10 +18038,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.2.22</IP>
+         <SUBNET>255.255.255.0</SUBNET>
+         <PORT_GATEWAY>10.10.2.1</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -18089,7 +18089,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>STUDENT-PC2</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.2.1</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -18316,10 +18316,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.0.41</IP>
+         <SUBNET>255.255.255.224</SUBNET>
+         <PORT_GATEWAY>10.10.0.33</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -18367,7 +18367,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>LIBRARY-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.0.33</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -18594,10 +18594,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.1.141</IP>
+         <SUBNET>255.255.255.192</SUBNET>
+         <PORT_GATEWAY>10.10.1.129</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -18645,7 +18645,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>ENG-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.1.129</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -18872,10 +18872,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.3.21</IP>
+         <SUBNET>255.255.255.0</SUBNET>
+         <PORT_GATEWAY>10.10.3.1</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -18923,7 +18923,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>HOSTEL-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.3.1</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -19150,10 +19150,10 @@ Hello, world!
          <CLOCKRATEFLAG>false</CLOCKRATEFLAG>
          <DESCRIPTION/>
          <CHANNEL>0</CHANNEL>
-         <IP/>
-         <SUBNET/>
-         <PORT_GATEWAY/>
-         <PORT_DNS></PORT_DNS>
+         <IP>10.10.0.71</IP>
+         <SUBNET>255.255.255.240</SUBNET>
+         <PORT_GATEWAY>10.10.0.65</PORT_GATEWAY>
+         <PORT_DNS>10.10.0.10</PORT_DNS>
          <PORT_DHCP_ENABLE>true</PORT_DHCP_ENABLE>
          <ND_SUPPRESSED>false</ND_SUPPRESSED>
          <TIMEOUT>14400000</TIMEOUT>
@@ -19201,7 +19201,7 @@ Hello, world!
       <Z_COORD>0</Z_COORD>
      </COORD_SETTINGS>
      <SYS_NAME>BRANCH-PC</SYS_NAME>
-     <GATEWAY></GATEWAY>
+     <GATEWAY>10.10.0.65</GATEWAY>
      <DNS_CLIENT>
       <SERVER_IP/>
       <SERVER_IPV6/>
@@ -20959,42 +20959,42 @@ TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
   </BUILDING_GRID>
   <GRID_COLOR>#ffffff</GRID_COLOR>
   <NOTES>
-    <NOTE uuid="{ad340f5b-462a-4769-9fcb-1eaedb758aac}">
+    <NOTE uuid="{a921dc63-d322-40aa-92e6-c39b478b4355}">
      <X>140</X>
      <Y>190</Y>
      <Z>40000</Z>
      <TEXT translate="true">OSPF AREA 0 - BACKBONE (R1 R2 R3 R9)</TEXT>
      <NOTECLUSTERID>1-1</NOTECLUSTERID>
     </NOTE>
-    <NOTE uuid="{88f2744e-8a27-4ee5-9ad7-5a3c1c8ded4b}">
+    <NOTE uuid="{7a8ffd7d-ce6a-4b7a-81b9-d6d51381ea14}">
      <X>30</X>
      <Y>420</Y>
      <Z>40000</Z>
      <TEXT translate="true">OSPF AREA 1 (R2 R4 R5 R6)</TEXT>
      <NOTECLUSTERID>1-1</NOTECLUSTERID>
     </NOTE>
-    <NOTE uuid="{67386340-1ce7-47e8-9872-6b1a7d93a7af}">
+    <NOTE uuid="{f81493a9-0594-4b89-84e9-259770dc8790}">
      <X>410</X>
      <Y>420</Y>
      <Z>40000</Z>
      <TEXT translate="true">OSPF AREA 2 (R3 R7 R8 R10)</TEXT>
      <NOTECLUSTERID>1-1</NOTECLUSTERID>
     </NOTE>
-    <NOTE uuid="{b56e394c-2f4a-4735-b65c-55dace67f3e5}">
+    <NOTE uuid="{0d11579b-a245-45f4-9c68-2c44c61a60c7}">
      <X>300</X>
      <Y>160</Y>
      <Z>40000</Z>
      <TEXT translate="true">DMZ-LAN 10.10.0.96/27 (DNS-2, WEB-2)</TEXT>
      <NOTECLUSTERID>1-1</NOTECLUSTERID>
     </NOTE>
-    <NOTE uuid="{83315ff4-8bac-4ff6-858f-ab8c01898ce4}">
+    <NOTE uuid="{866d0280-83de-49d9-a399-3b8e4947dfe6}">
      <X>620</X>
      <Y>50</Y>
      <Z>40000</Z>
      <TEXT translate="true">UPSTREAM ISP - static route only</TEXT>
      <NOTECLUSTERID>1-1</NOTECLUSTERID>
     </NOTE>
-    <NOTE uuid="{649b79bc-5af9-4d57-b2ce-8c3984c90c4f}">
+    <NOTE uuid="{51aa4204-95cc-4f5f-9271-ec3a7cb891fe}">
      <X>20</X>
      <Y>720</Y>
      <Z>40000</Z>
