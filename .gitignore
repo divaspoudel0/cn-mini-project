@@ -1,2 +1,10 @@
 __pycache__/
 *.pyc
+build/
+output/
+pktbuilder.egg-info/
+*.pkt
+*.xml
+*.yaml
+!topologies/*.yaml
+!pktbuilder/topologies/*.yaml
