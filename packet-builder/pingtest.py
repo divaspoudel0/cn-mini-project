@@ -244,10 +244,8 @@ def main(xml_path):
             if not pi["ip"] or pi["ip"] != want_gw:
                 continue
             base = pname.split(".")[0]
-            norm = {"Gi": "GigabitEthernet", "Fa": "FastEthernet"}.get(
-                base[:2], base)
-            if pname == port or base == port or port.startswith(base) or \
-                    base.startswith(port):
+            # physical port matches or is the parent of a subinterface
+            if pname == port or base == port:
                 if "." in pname:
                     try:
                         if int(pname.split(".")[1]) != vlan:
@@ -369,7 +367,7 @@ def main(xml_path):
                     myport = lk["from_port"] if lk["from"] == didx \
                         else lk["to_port"]
                     mvl = port_vlans(d["name"], myport)
-                    if mvl is None or vlan in mvl:
+                    if mvl is not None and vlan in mvl:
                         stack.append((other, oport))
             elif d["kind"] == "router":
                 if via_port and gw_on_router(d["name"], via_port, vlan,
