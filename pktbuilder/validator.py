@@ -291,23 +291,25 @@ def validate_spec(spec, verbose=True):
         return False
 
     def gateway_reachable(hidx_name, vlan, want_gw):
-        stack = [(hidx_name, None)]
+        # stack: (current_device, prev_device, port_on_current_to_prev)
+        stack = [(hidx_name, None, None)]
         visited = set()
         while stack:
-            dname, via = stack.pop()
-            key = (dname, via)
+            dname, prev, port_to_prev = stack.pop()
+            key = (dname, prev)
             if key in visited:
                 continue
             visited.add(key)
-            if dname == hidx_name and via is None:
+            if dname == hidx_name and prev is None:
                 for lk in adj.get(dname, []):
                     other, oport = link_other(lk, dname)
-                    stack.append((other, oport))
+                    # oport is the port on the OTHER device
+                    stack.append((other, dname, oport))
                 continue
             d = by_name[dname]
             if d["kind"] == "switch":
-                if via:
-                    vl = port_vlans(dname, via)
+                if port_to_prev:
+                    vl = port_vlans(dname, port_to_prev)
                     if vl is None or vlan not in vl:
                         continue
                 for lk in adj.get(dname, []):
@@ -315,9 +317,12 @@ def validate_spec(spec, verbose=True):
                         else lk["b_port"]
                     mvl = port_vlans(dname, myport)
                     if mvl is not None and vlan in mvl:
-                        stack.append(link_other(lk, dname))
+                        other, other_port = link_other(lk, dname)
+                        stack.append((other, dname, other_port))
             elif d["kind"] == "router":
-                if via and gw_on_router(dname, via, vlan, want_gw):
+                # port_to_prev is the port on THIS router that connects to prev
+                router_port = port_to_prev
+                if router_port and gw_on_router(dname, router_port, vlan, want_gw):
                     return True
         return False
 

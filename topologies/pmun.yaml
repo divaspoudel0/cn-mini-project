@@ -171,9 +171,9 @@ links:
 
   # ------------------------------------------- copper / ethernet wiring
   # access routers -> switches
-  - [R4-ACC-ADMIN, GigabitEthernet0/0, SW-ADMIN, GigabitEthernet0/1]
-  - [R5-ACC-FACULTY, GigabitEthernet0/0, SW-FACULTY, GigabitEthernet0/1]
-  - [R6-ACC-STUDENT, GigabitEthernet0/0, SW-STUDENT, GigabitEthernet0/1]
+  - [R4-ACC-ADMIN, GigabitEthernet0/0, SW-ADMIN, GigabitEthernet0/0]
+  - [R5-ACC-FACULTY, GigabitEthernet0/0, SW-FACULTY, GigabitEthernet0/0]
+  - [R6-ACC-STUDENT, GigabitEthernet0/0, SW-STUDENT, GigabitEthernet0/0]
   # inter-switch trunks
   - [SW-ADMIN, GigabitEthernet0/2, SW-FACULTY, GigabitEthernet0/2]
   - [SW-FACULTY, FastEthernet0/21, SW-STUDENT, GigabitEthernet0/2]

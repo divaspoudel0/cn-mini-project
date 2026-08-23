@@ -109,7 +109,7 @@ def switch_ports():
     names = set()
     for i in range(1, SWITCH_FAST + 1):
         names.add("FastEthernet0/%d" % i)
-    for i in range(1, SWITCH_GIG + 1):
+    for i in range(0, SWITCH_GIG + 1):
         names.add("GigabitEthernet0/%d" % i)
     return names
 
@@ -415,7 +415,7 @@ def _check_endpoint_port(dev, port):
         if port not in switch_ports():
             raise TopologyError(
                 "switch %s (2960-24TT) has no port %r; valid: "
-                "FastEthernet0/1-24, GigabitEthernet0/1-2" % (dname, port))
+                "FastEthernet0/1-24, GigabitEthernet0/0-2" % (dname, port))
         return
     # router: port must exist in its parsed config
     if port.split(".")[0] not in dev["ports"]:
