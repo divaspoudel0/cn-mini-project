@@ -1,21 +1,22 @@
 # pktbuilder — Cisco Packet Tracer Topology Generator
 
-Generate **version-compatible `.pkt` files** from a simple, human-readable **YAML** (or JSON) topology description. Write your network once — routers, switches, PCs, servers, VLANs, DHCP pools, OSPF areas, serial back-to-back links — and `pktbuild` produces a ready-to-open Packet Tracer file with every device pre-configured, tested, and verified.
+> Generate **version-compatible `.pkt` files** from a simple, human-readable **YAML** (or JSON) topology description. Write your network once — routers, switches, PCs, servers, VLANs, DHCP pools, OSPF areas, serial back-to-back links — and `pktbuild` produces a ready-to-open Packet Tracer file with every device pre-configured, tested, and verified.
 
-```bash
-# 1. Create a starter topology
-pktbuild example tiny-lab
+---
 
-# 2. Edit the YAML to match your network
-vim tiny-lab.yaml
+## Table of Contents
 
-# 3. Validate (addressing, VLAN domains, OSPF coverage, ping matrix)
-pktbuild validate tiny-lab.yaml
-
-# 4. Build the .pkt file
-pktbuild build tiny-lab.yaml -o output
-# → output/tiny-lab.pkt  (open in Packet Tracer)
-```
+- [Why pktbuilder?](#why-pktbuilder)
+- [Quick Start](#quick-start)
+- [Topology File Format](#topology-file-format-yaml)
+- [Validation Checks](#what-validation-checks-pktbuild-validate)
+- [CLI Reference](#cli-reference)
+- [Example: PMUN Campus Network](#example-pmun-pulchowk-metropolitan-university-network)
+- [Programmatic API](#programmatic-api)
+- [Project Layout](#project-layout)
+- [Extending](#extending)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
 ---
 
@@ -34,6 +35,7 @@ pktbuild build tiny-lab.yaml -o output
 ## Quick Start
 
 ### Install
+
 ```bash
 git clone https://github.com/<your-org>/pktbuilder
 cd pktbuilder
@@ -41,7 +43,8 @@ python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 ```
 
-### Try the examples
+### Try the Examples
+
 ```bash
 # Three bundled starters
 pktbuild example tiny-lab      # 2 routers, 1 serial, 2 PCs, OSPF
@@ -62,6 +65,7 @@ pktbuild build tiny-lab.yaml -o output
 name: my-campus          # used for output filename
 notes:                   # optional workspace labels
   - {x: 100, y: 50, text: "OSPF Area 0"}
+
 devices:
   - name: CORE-RTR
     kind: router         # router | switch | pc | server
@@ -116,7 +120,7 @@ links:
 
 ### Device Kinds
 
-| Kind | Required fields | Notes |
+| Kind | Required Fields | Notes |
 |------|----------------|-------|
 | `router` | `config` or `config_file` | IOS CLI; subinterfaces `G0/0.10` auto-wired |
 | `switch` | `config` or `config_file` | 2960-24TT blueprint; `vlan`, `interface range` parsed |
@@ -127,7 +131,7 @@ links:
 
 * **Serial**: `[R1, Serial0/0/0, R2, Serial0/0/0]` — DCE end detected from `clock rate` in the config.
 * **Copper**: `[SW1, GigabitEthernet0/1, R1, GigabitEthernet0/0]` — straight-through.
-* Validation forbids copper between two routers, serial to non-routers, duplicate port usage.
+* Validation forbids: copper between two routers, serial to non-routers, duplicate port usage.
 
 ---
 
@@ -204,12 +208,15 @@ pktbuilder/
   validator.py         # static L2/L3 verification (no PT needed)
   cli.py               # pktbuild command
   pka2xml.py           # pure-Python EAX decrypt/encrypt (Crypto++-compatible)
+
 tests/
   test_pktbuilder.py   # 16 tests: model, builder, CLI, round-trips
+
 topologies/
   tiny-lab.yaml
   campus-basic.yaml
   pmun.yaml
+
 pyproject.toml
 README.md
 ```
