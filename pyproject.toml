@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pktbuilder"
+version = "1.0.0"
+description = "Generate Cisco Packet Tracer (.pkt) files from a simple YAML topology"
+requires-python = ">=3.8"
+dependencies = ["pyyaml>=5.1", "twofish>=0.3"]
+license = {text = "MIT"}
+authors = [{name = "Divas Poudel"}]
+
+[project.scripts]
+pktbuild = "pktbuilder.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["pktbuilder*"]
+
+[tool.setuptools.package-data]
+pktbuilder = ["blueprints/*.xml", "topologies/*.yaml"]

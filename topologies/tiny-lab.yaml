@@ -1,0 +1,87 @@
+# Tiny two-router lab -- the smallest useful Packet Tracer network.
+#
+# Build it:   pktbuild build tiny-lab.yaml -o output
+# Validate:   pktbuild validate tiny-lab.yaml
+#
+# Two 2911 routers joined by a serial back-to-back link, one PC hanging off
+# each router LAN, OSPF routing between the LANs. Open output/tiny-lab.pkt
+# in Packet Tracer and ping PC1 -> PC2 from the PC's Command Prompt.
+
+name: tiny-lab
+notes:
+  - {x: 150, y: 60, text: "OSPF area 0 -- 10.0.0.0/30"}
+  - {x: 40, y: 220, text: "LAN A -- 192.168.1.0/24"}
+  - {x: 330, y: 220, text: "LAN B -- 192.168.2.0/24"}
+
+devices:
+  # ------------------------------------------------------------- routers
+  - name: R1
+    kind: router
+    x: 170
+    y: 130
+    config: |
+      enable
+      configure terminal
+      hostname R1
+      interface GigabitEthernet0/0
+       description LAN-A
+       ip address 192.168.1.1 255.255.255.0
+       no shutdown
+      interface Serial0/0/0
+       description Link-to-R2
+       ip address 10.0.0.1 255.255.255.252
+       clock rate 64000
+       no shutdown
+      router ospf 1
+       network 192.168.1.0 0.0.0.255 area 0
+       network 10.0.0.0 0.0.0.3 area 0
+      end
+      write memory
+
+  - name: R2
+    kind: router
+    x: 320
+    y: 130
+    config: |
+      enable
+      configure terminal
+      hostname R2
+      interface GigabitEthernet0/0
+       description LAN-B
+       ip address 192.168.2.1 255.255.255.0
+       no shutdown
+      interface Serial0/0/0
+       description Link-to-R1
+       ip address 10.0.0.2 255.255.255.252
+       no shutdown
+      router ospf 1
+       network 192.168.2.0 0.0.0.255 area 0
+       network 10.0.0.0 0.0.0.3 area 0
+      end
+      write memory
+
+  # ----------------------------------------------------------------- PCs
+  - name: PC1
+    kind: pc
+    x: 80
+    y: 280
+    ip: 192.168.1.11
+    mask: 255.255.255.0
+    gateway: 192.168.1.1
+    dns: 192.168.1.1
+
+  - name: PC2
+    kind: pc
+    x: 400
+    y: 280
+    ip: 192.168.2.11
+    mask: 255.255.255.0
+    gateway: 192.168.2.1
+    dns: 192.168.2.1
+
+links:
+  # DCE side is detected automatically from the `clock rate` line,
+  # so just name the two ends:
+  - [R1, Serial0/0/0, R2, Serial0/0/0]
+  - [R1, GigabitEthernet0/0, PC1, FastEthernet0]
+  - [R2, GigabitEthernet0/0, PC2, FastEthernet0]

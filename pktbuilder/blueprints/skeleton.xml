@@ -1,0 +1,577 @@
+<PACKETTRACER5>
+ <VERSION>6.1.0.0073</VERSION>
+ <NETWORK>
+  <DEVICES>
+  </DEVICES>
+  <LINKS>
+  </LINKS>
+  <SHAPETESTS/>
+  <DESCRIPTION translate="true">PMUN (Pulchowk Metropolitan University Network) - 11 routers, 3 LAN + server/DMZ switches, 3-area OSPF, 2 DNS + 2 Web servers, DHCP</DESCRIPTION>
+ </NETWORK>
+ <SCENARIOSET>
+  <SCENARIO>
+   <NAME translate="true">Scenario 0</NAME>
+   <DESCRIPTION translate="true"/>
+  </SCENARIO>
+ </SCENARIOSET>
+ <OPTIONS>
+  <LANGUAGE>default.ptl</LANGUAGE>
+  <ANIMATION>true</ANIMATION>
+  <SOUND>false</SOUND>
+  <TELEPHONESOUND>true</TELEPHONESOUND>
+  <DOCK>true</DOCK>
+  <LOGGING>true</LOGGING>
+  <PASS/>
+  <CONFIGPATH>./</CONFIGPATH>
+  <MODELSHOWN>true</MODELSHOWN>
+  <LINKLIGHTSSHOWN>true</LINKLIGHTSSHOWN>
+  <PORTSHOWN>false</PORTSHOWN>
+  <BACKGROUNDS>
+   <IMAGE second="../backgrounds/logical/grid_10x10.png" first="Logical"/>
+   <IMAGE second="../backgrounds/logical/grid_25x25.png" first="Logical"/>
+   <IMAGE second="../backgrounds/logical/grid_50x50.png" first="Logical"/>
+   <IMAGE second="../backgrounds/logical/grid_100x100.png" first="Logical"/>
+   <IMAGE second="../backgrounds/intercity/gGeoViewInterCity.png" first="Intercity"/>
+   <IMAGE second="../backgrounds/city/gGeoViewCity.png" first="City"/>
+   <IMAGE second="../backgrounds/city/gCiscoCampus.jpg" first="City"/>
+   <IMAGE second="../backgrounds/building/gGeoViewBuilding.png" first="Building"/>
+  </BACKGROUNDS>
+  <HIDEPHYSICAL>false</HIDEPHYSICAL>
+  <HIDECONFIG>false</HIDECONFIG>
+  <HIDECLI>false</HIDECLI>
+  <HIDEDESKTOP>false</HIDEDESKTOP>
+  <HIDEGUI>false</HIDEGUI>
+  <HIDEGUIHTML>false</HIDEGUIHTML>
+  <HIDEHTML>false</HIDEHTML>
+  <HIDEDEVICELABEL>false</HIDEDEVICELABEL>
+  <BUFFER_FILTERED_EVENTS_ONLY>false</BUFFER_FILTERED_EVENTS_ONLY>
+  <ACCESSIBLE>false</ACCESSIBLE>
+  <COLOR>
+   <IOSTEXTCOLOR iosTextColor="#000000"/>
+   <IOSBACKGROUNDCOLOR iosBackgroundColor="#ffffff"/>
+   <CONSOLETEXTCOLOR consoleTextColor="#ffffff"/>
+   <CONSOLEBACKGROUNDCOLOR consoleBackgroundColor="#000000"/>
+  </COLOR>
+  <FONT>
+   <CLIFONT family="Courier New" pointsize="8 "/>
+   <HEADERFONT family="Verdana" pointsize="8 "/>
+   <WORKSPACEFONT family="Verdana" pointsize="8 "/>
+   <ACTIVITYFONT family="Verdana" pointsize="8 "/>
+   <FILEMENUFONT family="Tahoma" pointsize="8 "/>
+   <TABSWITCH family="Verdana" pointsize="10 "/>
+   <TOOLTIP family="Courier New" pointsize="8 "/>
+   <BUTTONLABELS family="Verdana" pointsize="8 "/>
+  </FONT>
+  <BUFFER_FULL_ACTION>0</BUFFER_FULL_ACTION>
+  <MULTIUSER>
+   <NAME></NAME>
+   <ALLOWREMOTESAVING>true</ALLOWREMOTESAVING>
+   <ALWAYSLISTENATSTARTUP>true</ALWAYSLISTENATSTARTUP>
+   <SHOW_CONNECTED_PORT_NAMES>true</SHOW_CONNECTED_PORT_NAMES>
+   <MU_PEERS>
+    <PEER>localhost:38000</PEER>
+   </MU_PEERS>
+   <REMOTE_SAVING_DEPTH>5</REMOTE_SAVING_DEPTH>
+   <MU_PASSWORD>cisco</MU_PASSWORD>
+   <MU_ACCEPT_MODE>0</MU_ACCEPT_MODE>
+   <MU_NEW_RNET_ACCEPT_MODE>1</MU_NEW_RNET_ACCEPT_MODE>
+   <MU_ALLOW_PTMP_BROADCAST>true</MU_ALLOW_PTMP_BROADCAST>
+  </MULTIUSER>
+  <IPC_MANAGER>
+   <METAFILE_PATH>../extensions/IpcLog/IpcLog.pta</METAFILE_PATH>
+   <METAFILE_PATH>../extensions/IpcTest/IpcTest.pta</METAFILE_PATH>
+   <METAFILE_PATH>../extensions/ptaplayer/ptaplayer.pta</METAFILE_PATH>
+   <METAFILE_PATH>../extensions/PTUpdater/PTUpdater.pta</METAFILE_PATH>
+   <METAFILE_PATH>../extensions/telemetry/pttelemetry.pta</METAFILE_PATH>
+   <METAFILE_PATH>../extensions/upnp/upnp.pta</METAFILE_PATH>
+   <DISABLED_CEPS/>
+   <TRUSTED_PUBLISHERS>
+    <CERTIFICATE>-----BEGIN CERTIFICATE-----
+MIID3zCCAsegAwIBAgIJAJkCABWNDpj2MA0GCSqGSIb3DQEBBQUAMIGFMQswCQYD
+VQQGEwJVUzETMBEGA1UECAwKQ2FsaWZvcm5pYTERMA8GA1UEBwwIU2FuIEpvc2Ux
+DjAMBgNVBAoMBUNpc2NvMRswGQYDVQQLDBJOZXR3b3JraW5nIEFjYWRlbXkxITAf
+BgNVBAMMGENpc2NvIE5ldHdvcmtpbmcgQWNhZGVteTAeFw0xMjA2MjYxODMzNTda
+Fw0xNTA2MjYxODMzNTdaMIGFMQswCQYDVQQGEwJVUzETMBEGA1UECAwKQ2FsaWZv
+cm5pYTERMA8GA1UEBwwIU2FuIEpvc2UxDjAMBgNVBAoMBUNpc2NvMRswGQYDVQQL
+DBJOZXR3b3JraW5nIEFjYWRlbXkxITAfBgNVBAMMGENpc2NvIE5ldHdvcmtpbmcg
+QWNhZGVteTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANOcgK2pytQz
+XXSAAOW3wA+Y17EHfo/sjiAJIahb4QMfrvIlQ/5nF7llk7IdwdbzrA6KNrqiGrq+
+XlVJA1NqHU/gc86oe9GiUtX4ZkZ9m4NYEUAjmpMyKsjk+OXkcGP4w1fZYZVYCuet
+++Z2K1FOHL7l7JT/hvx9v23/tA4W5uoh5TsrkpmGUnP55EY7EOzAJjnbAaHmLFm8
+t/Njw4Pyr56ZVmGAkx+UfjDw7An3K5SkygvFlcMmr21EzG1hrJOsVbCQrpiXEQjs
+/e/Z0UsBO6xDP4noo0QjuLu2d4ufAUXq74FCgdR0sxBNU2dgcubsK4ujSZEwXCAE
+U9//AfE84sECAwEAAaNQME4wHQYDVR0OBBYEFLoFhJqmipZvKLJIeIN6s/1KVIgN
+MB8GA1UdIwQYMBaAFLoFhJqmipZvKLJIeIN6s/1KVIgNMAwGA1UdEwQFMAMBAf8w
+DQYJKoZIhvcNAQEFBQADggEBAKoFyOyu8PphB3JPiEgy41Jg3IDu9Fx2P+2zKxZQ
+OcIrMcvr6qsZUFMcPtBCzldiAtqORIp8KP7KZDqpj8X7/qGvkKItt5lwUlhMnv8D
+Ei282ZneXYMZm5WUqa03yEjQrF0Xl6ycIZHKbQkxD1FWWUc0D8N910Art1ePPzda
+GyR9UsE9dbhYvjbIH788L4hlrCCzKTyBnHd6Q1fOjXO7fUPWbNq1hdrRCN0bOITa
+TViXQNmM8MZ7tlt1fXOUhTFo7Arsavn4StyTovfLaKu+5j1qOcfj13bTHRbco7IQ
+024hlUk5CoXXMYgogY1pU6sxtjAL2tKr084QJ3z4DF2LPKo=
+-----END CERTIFICATE-----
+</CERTIFICATE>
+   </TRUSTED_PUBLISHERS>
+   <UNTRUSTED_PUBLISHERS/>
+  </IPC_MANAGER>
+  <IPC_ALLOWREMOTEAPPS>false</IPC_ALLOWREMOTEAPPS>
+  <RECENT_FILES>
+   <FILE>C:\Users\thingu\Downloads\8268.pkt</FILE>
+   <FILE>C:\Program Files (x86)\Cisco Packet Tracer 6.1 Build 73\saves\Router\ZFW\ZFW.pkt</FILE>
+   <FILE>C:\Users\thingu\AppData\Local\Microsoft\Windows\Temporary Internet Files\Content.IE5\8CHEA3A5\ZFW_SESSION_OUTPUT.pkt</FILE>
+   <FILE>C:\Program Files (x86)\Cisco Packet Tracer 6.1 Build 73\saves\Router\CBAC\CBAC_3Interface.pkt</FILE>
+   <FILE>C:\Users\thingu\Downloads\dhcp_apipa.pkt</FILE>
+  </RECENT_FILES>
+  <PORTNOTSHOWNONMOUSEOVER>false</PORTNOTSHOWNONMOUSEOVER>
+  <INTERFACE_LOCK>false,false,false,false,false,false,false</INTERFACE_LOCK>
+  <ALGORITHM_SETTINGS>
+   <USE_GLOBAL>false</USE_GLOBAL>
+   <CBAC_HALF_OPEN_SESSION_MULTIPLIER>1</CBAC_HALF_OPEN_SESSION_MULTIPLIER>
+   <TCP_MAX_CONNECTING_SESSIONS>100</TCP_MAX_CONNECTING_SESSIONS>
+   <TCP_MAX_OPENED_SESSIONS>1000</TCP_MAX_OPENED_SESSIONS>
+   <INTERFACE_QUEUE_SIZE>10</INTERFACE_QUEUE_SIZE>
+   <STORM_CONTROL_MULTIPLIER>10</STORM_CONTROL_MULTIPLIER>
+   <TCP_MAX_RETRANSMISSION_TIMEOUT>1000</TCP_MAX_RETRANSMISSION_TIMEOUT>
+  </ALGORITHM_SETTINGS>
+  <HIDEQOSSTAMP>false</HIDEQOSSTAMP>
+  <IPCLISTENSTARTUP>true</IPCLISTENSTARTUP>
+  <ENABLE_CABLE_LENGTH_EFFECTS>true</ENABLE_CABLE_LENGTH_EFFECTS>
+  <DISABLE_AUTO_CABLE>false</DISABLE_AUTO_CABLE>
+  <SHOW_DEV_TASKBAR>false</SHOW_DEV_TASKBAR>
+  <SHOW_BOTTOM_TOOLBAR>true</SHOW_BOTTOM_TOOLBAR>
+  <SHOW_RIGHT_TOOLBAR>true</SHOW_RIGHT_TOOLBAR>
+  <SHOW_MAIN_TOOLBAR>true</SHOW_MAIN_TOOLBAR>
+  <SHOW_DEV_MODEL_LABEL>false</SHOW_DEV_MODEL_LABEL>
+  <SCRIPT_MODULE_MANAGER>
+   <SCRIPT_MODULES>
+    <SCRIPT_MODULE>
+     <FILE_PATH>../extensions/ClearTerminalAgent/Clear Terminal Agent.pts</FILE_PATH>
+     <SCRIPT_MODULE_DATA>
+      <SCRIPT_DATA_STORES/>
+     </SCRIPT_MODULE_DATA>
+    </SCRIPT_MODULE>
+    <SCRIPT_MODULE>
+     <FILE_PATH>../extensions/LanMultiuserAgent/LanMultiuserAgent.pts</FILE_PATH>
+     <SCRIPT_MODULE_DATA>
+      <SCRIPT_DATA_STORES>
+       <DATA_STORE>
+        <ID>HOSTNAME</ID>
+        <CONTENT><![CDATA[]]></CONTENT>
+       </DATA_STORE>
+      </SCRIPT_DATA_STORES>
+     </SCRIPT_MODULE_DATA>
+    </SCRIPT_MODULE>
+    <SCRIPT_MODULE>
+     <FILE_PATH>../extensions/PcSoftware/PcSoftware.pts</FILE_PATH>
+     <SCRIPT_MODULE_DATA>
+      <SCRIPT_DATA_STORES>
+       <DATA_STORE>
+        <ID>software.json</ID>
+        <CONTENT><![CDATA[W3sibmFtZSI6Ik9QRVJBVElORyBTWVNURU0iLCJwYWdlIjoiIn0seyJuYW1lIjoiV0lSRUxFU1NfQklMTElORyIsInBhZ2UiOiIifSx7Im5hbWUiOiJNRURJQ0FMIiwicGFnZSI6IiJ9LHsibmFtZSI6IkJVU0lORVNTIiwicGFnZSI6IiJ9LHsibmFtZSI6Ik1BTkFHRU1FTlQiLCJwYWdlIjoiIn0seyJuYW1lIjoiR0FNRSIsInBhZ2UiOiIifSx7Im5hbWUiOiJFRFVDQVRJT05BTCIsInBhZ2UiOiIifSx7Im5hbWUiOiJORVRXT1JLIiwicGFnZSI6IiJ9LHsibmFtZSI6IlNZU1RFTSIsInBhZ2UiOiIifV0=]]></CONTENT>
+       </DATA_STORE>
+      </SCRIPT_DATA_STORES>
+     </SCRIPT_MODULE_DATA>
+    </SCRIPT_MODULE>
+    <SCRIPT_MODULE>
+     <FILE_PATH>../extensions/WanMultiuserAgent/WanMultiuserAgent.pts</FILE_PATH>
+     <SCRIPT_MODULE_DATA>
+      <SCRIPT_DATA_STORES/>
+     </SCRIPT_MODULE_DATA>
+    </SCRIPT_MODULE>
+   </SCRIPT_MODULES>
+   <DISABLED_SCRIPT_MODULES/>
+  </SCRIPT_MODULE_MANAGER>
+  <USE_CLI_DEFAULT_TAB>false</USE_CLI_DEFAULT_TAB>
+  <NEW_DEVICE_CUSTOM_INTERFACES>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>8</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>9</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>12</DEVICE_TYPE>
+    <INTERFACE></INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>16</DEVICE_TYPE>
+    <INTERFACE></INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>17</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>18</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>19</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>20</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+   <CUSTOM_INTERFACE>
+    <DEVICE_TYPE>21</DEVICE_TYPE>
+    <INTERFACE>net.netacad.cisco.PcSoftware:software.htm</INTERFACE>
+   </CUSTOM_INTERFACE>
+  </NEW_DEVICE_CUSTOM_INTERFACES>
+ </OPTIONS>
+ <PHYSICALWORKSPACE>
+  <HOMERACK translate="true">Intercity,Home City,Corporate Office,Main Wiring Closet</HOMERACK>
+  <NODE>
+   <X>0</X>
+   <Y>0</Y>
+   <TYPE>0</TYPE>
+   <NAME translate="true">Intercity</NAME>
+   <SX>8.98473</SX>
+   <SY>8.98473</SY>
+   <W>20000</W>
+   <H>12416.9</H>
+   <PATH>../art/Background/gGeoViewInterCity.png</PATH>
+   <CHILDREN>
+    <NODE>
+     <X>200</X>
+     <Y>200</Y>
+     <TYPE>1</TYPE>
+     <NAME translate="true">Home City</NAME>
+     <SX>1.18694</SX>
+     <SY>1.18694</SY>
+     <W>2000</W>
+     <H>1237.98</H>
+     <PATH>../art/Background/gGeoViewCity.png</PATH>
+     <CHILDREN>
+      <NODE>
+       <X>100</X>
+       <Y>100</Y>
+       <TYPE>2</TYPE>
+       <NAME translate="true">Corporate Office</NAME>
+       <SX>0.058072</SX>
+       <SY>0.058072</SY>
+       <W>200</W>
+       <H>125.261</H>
+       <PATH>../art/Background/gGeoViewBuilding.png</PATH>
+       <CHILDREN>
+        <NODE>
+         <X>50</X>
+         <Y>50</Y>
+         <TYPE>3</TYPE>
+         <NAME translate="true">Main Wiring Closet</NAME>
+         <SX>1</SX>
+         <SY>1</SY>
+         <W>20</W>
+         <H>20</H>
+         <PATH>../art/Background/grid_100x100.png</PATH>
+         <CHILDREN>
+          <NODE>
+           <X>0</X>
+           <Y>0</Y>
+           <TYPE>5</TYPE>
+           <NAME translate="true">Table</NAME>
+           <SX>1</SX>
+           <SY>1</SY>
+           <W>0</W>
+           <H>0</H>
+           <PATH>../art/Background/grid_100x100.png</PATH>
+           <CHILDREN>
+            <NODE>
+             <X>0</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">PC0</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>0</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">PC1</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+           </CHILDREN>
+           <MANUAL_SCALING>false</MANUAL_SCALING>
+           <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+           <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+           <INIT_WIDTH>0</INIT_WIDTH>
+           <INIT_HEIGHT>0</INIT_HEIGHT>
+           <INIT_SX>1</INIT_SX>
+           <INIT_SY>0</INIT_SY>
+           <BG_TILED>false</BG_TILED>
+          </NODE>
+          <NODE>
+           <X>0</X>
+           <Y>0</Y>
+           <TYPE>4</TYPE>
+           <NAME translate="true">Rack</NAME>
+           <SX>1</SX>
+           <SY>1</SY>
+           <W>0</W>
+           <H>0</H>
+           <PATH>../art/Background/grid_100x100.png</PATH>
+           <CHILDREN>
+            <NODE>
+             <X>5</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">Server0</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>25</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">Switch0</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+            <NODE>
+             <X>33</X>
+             <Y>0</Y>
+             <TYPE>6</TYPE>
+             <NAME translate="true">Router1</NAME>
+             <SX>1</SX>
+             <SY>1</SY>
+             <W>0</W>
+             <H>0</H>
+             <PATH>../art/Background/grid_100x100.png</PATH>
+             <CHILDREN/>
+             <MANUAL_SCALING>false</MANUAL_SCALING>
+             <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+             <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+             <INIT_WIDTH>0</INIT_WIDTH>
+             <INIT_HEIGHT>0</INIT_HEIGHT>
+             <INIT_SX>1</INIT_SX>
+             <INIT_SY>0</INIT_SY>
+             <BG_TILED>false</BG_TILED>
+            </NODE>
+           </CHILDREN>
+           <MANUAL_SCALING>false</MANUAL_SCALING>
+           <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+           <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+           <INIT_WIDTH>0</INIT_WIDTH>
+           <INIT_HEIGHT>0</INIT_HEIGHT>
+           <INIT_SX>1</INIT_SX>
+           <INIT_SY>0</INIT_SY>
+           <BG_TILED>false</BG_TILED>
+          </NODE>
+         </CHILDREN>
+         <MANUAL_SCALING>false</MANUAL_SCALING>
+         <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+         <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+         <INIT_WIDTH>20</INIT_WIDTH>
+         <INIT_HEIGHT>20</INIT_HEIGHT>
+         <INIT_SX>1</INIT_SX>
+         <INIT_SY>0.2</INIT_SY>
+         <BG_TILED>false</BG_TILED>
+        </NODE>
+       </CHILDREN>
+       <MANUAL_SCALING>false</MANUAL_SCALING>
+       <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+       <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+       <INIT_WIDTH>200</INIT_WIDTH>
+       <INIT_HEIGHT>200</INIT_HEIGHT>
+       <INIT_SX>0.058072</INIT_SX>
+       <INIT_SY>0.0927214</INIT_SY>
+       <BG_TILED>false</BG_TILED>
+      </NODE>
+     </CHILDREN>
+     <MANUAL_SCALING>false</MANUAL_SCALING>
+     <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+     <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+     <INIT_WIDTH>2000</INIT_WIDTH>
+     <INIT_HEIGHT>2000</INIT_HEIGHT>
+     <INIT_SX>1.18694</INIT_SX>
+     <INIT_SY>1.91755</INIT_SY>
+     <BG_TILED>false</BG_TILED>
+    </NODE>
+   </CHILDREN>
+   <MANUAL_SCALING>false</MANUAL_SCALING>
+   <SCALED_PIXMAP_WIDTH>0</SCALED_PIXMAP_WIDTH>
+   <SCALED_PIXMAP_HEIGHT>0</SCALED_PIXMAP_HEIGHT>
+   <INIT_WIDTH>20000</INIT_WIDTH>
+   <INIT_HEIGHT>20000</INIT_HEIGHT>
+   <INIT_SX>8.98473</INIT_SX>
+   <INIT_SY>14.4718</INIT_SY>
+   <BG_TILED>false</BG_TILED>
+  </NODE>
+  <BGPATH></BGPATH>
+  <BGPATH_TILED>false</BGPATH_TILED>
+  <INTERCITY_GRID>
+   <X>2000</X>
+   <Y>1241</Y>
+   <ENABLED>false</ENABLED>
+  </INTERCITY_GRID>
+  <CITY_GRID>
+   <X>200</X>
+   <Y>123</Y>
+   <ENABLED>false</ENABLED>
+  </CITY_GRID>
+  <BUILDING_GRID>
+   <X>20</X>
+   <Y>12</Y>
+   <ENABLED>false</ENABLED>
+  </BUILDING_GRID>
+  <GRID_COLOR>#ffffff</GRID_COLOR>
+  <NOTES>
+   <NOTE uuid="{6f9812e6-bc18-4792-af9a-5980af5be18b}">
+    <X>257</X>
+    <Y>40</Y>
+    <Z>40000</Z>
+    <TEXT translate="true">1. Switch to Similation mode
+
+2. Do dhcp request from PC0
+
+3. DHCP Request fails and PC0 gets an APIPA address which is 169.254.213.152
+(AND product of 169.254.0.0 &amp;&amp; the last 2 bytes of the port Mac Address)
+
+4. Gratuitous Arp is sent out from PC0 to check for duplicate address.
+
+5. From PC1, request DHCP and expect PC1 to also get the address 169.254.213.152
+( since the last 2 bytes of the port mac address is the same as in PC0)
+
+6. PC1 sends out Gratuious ARP and gets a reply.
+
+7. PC1 now gets a new APIPA address 169.254.213.153
+
+8. PC1 sends out another Gratuitous ARP and no reply so it keeps the address.</TEXT>
+    <NOTECLUSTERID>1-1</NOTECLUSTERID>
+   </NOTE>
+   <NOTE uuid="{480ab3f9-194e-41fe-8733-1cb996a9d6ce}">
+    <X>263</X>
+    <Y>295</Y>
+    <Z>40000</Z>
+    <TEXT translate="true">On Router1, apply the command under interface fa0/0 mode:
+Router(config-if)#ip address dhcp 
+
+The interface shouldn't get an APIPA address</TEXT>
+    <NOTECLUSTERID>1-1</NOTECLUSTERID>
+   </NOTE>
+  </NOTES>
+ </PHYSICALWORKSPACE>
+ <FILTERS HSRPv6="no" TFTP="no" SSH="no" DTP="no" RADIUS="no" ARP="yes" TCP="no" EIGRP="no" UDP="no" NETFLOW="no" OSPFv6="no" NTP="no" ICMPv6="no" BGP="no" HTTPS="no" Telnet="no" SCCP="no" IPSec="no" ICMP="no" STP="no" DHCP="yes" CDP="no" NDP="no" POP3="no" H.323="no" RIPng="no" RTP="no" HSRP="no" ISAKMP="no" SMTP="no" DNS="no" FTP="no" EIGRPv6="no" LACP="no" SNMP="no" DHCPv6="yes" VTP="no" HTTP="no" OSPF="no" PAgP="no" TACACS="no" RIP="no" SYSLOG="no">
+  <ACL_FILTERS>
+   <ACL_FILTER>
+    <NAME>ACL Filter</NAME>
+    <STATEMENTS></STATEMENTS>
+    <ENABLED>no</ENABLED>
+   </ACL_FILTER>
+  </ACL_FILTERS>
+ </FILTERS>
+ <CLUSTERS>
+  <ROOTCLUSTER>
+   <NAME translate="true">Root</NAME>
+   <CLUSTERID>1-1</CLUSTERID>
+   <CLUSTER_BG_IMAGE></CLUSTER_BG_IMAGE>
+   <CLUSTER_ICON_IMAGE></CLUSTER_ICON_IMAGE>
+   <TILED_BG>false</TILED_BG>
+  </ROOTCLUSTER>
+ </CLUSTERS>
+ <LINES/>
+ <RECTANGLES/>
+ <ELLIPSES/>
+ <POLYGONS/>
+ <USER_PROFILE>
+  <NAME>Guest</NAME>
+  <EMAIL></EMAIL>
+  <ADDITIONAL_INFO></ADDITIONAL_INFO>
+ </USER_PROFILE>
+ <MULTIUSER>
+  <REMOTE_NETWORKS/>
+  <PORT_VISIBILITY/>
+ </MULTIUSER>
+ <GEOVIEW_GRAPHICSITEMS>
+  <ParentPhyObject>
+   <Path>Intercity</Path>
+   <GeoConnectionItems/>
+   <BreakPointItems/>
+   <GroupPointItems/>
+   <EllipticalShapes/>
+   <RectangularShapes/>
+   <LineShapes/>
+   <NoteEdits/>
+   <PolygonShapes/>
+  </ParentPhyObject>
+ </GEOVIEW_GRAPHICSITEMS>
+ <SCRIPT_MODULE>
+  <PT_APP_META>
+   <PT_VERSION/>
+   <IPC_VERSION/>
+   <NAME/>
+   <VERSION/>
+   <ID/>
+   <DESCRIPTION/>
+   <AUTHOR/>
+   <CONTACT/>
+   <EXECUTABLE_PATH/>
+   <DETACHED>false</DETACHED>
+   <KEY/>
+   <SECURITY_SETTINGS/>
+   <LOADING>ON_STARTUP</LOADING>
+   <SAVING>NEVER</SAVING>
+   <INSTANCES>1</INSTANCES>
+   <MANDATORY>false</MANDATORY>
+  </PT_APP_META>
+  <PASSWORD></PASSWORD>
+  <OPEN_IF_DENIED>false</OPEN_IF_DENIED>
+  <SCRIPTS>
+   <SCRIPT_DATA_STORES/>
+  </SCRIPTS>
+  <INTERFACES/>
+  <NEW_DEVICE_CUSTOM_INTERFACES/>
+ </SCRIPT_MODULE>
+ <CEPS/>
+</PACKETTRACER5>

@@ -1,0 +1,112 @@
+# Campus basic -- one router-on-a-stick, two VLANs, a DHCP pool per VLAN,
+# and a server that doubles as the network's DNS.
+#
+# Build it:   pktbuild build campus-basic.yaml -o output
+#
+# Demonstrates the features most campus networks need:
+#   * switch trunk + access ports (VLAN 10 staff, VLAN 20 students)
+#   * router subinterfaces G0/0.10 / G0/0.20 (inter-VLAN routing)
+#   * `ip dhcp pool` per VLAN; PCs use `dhcp: true` with a seeded lease
+#   * a server running DNS with A-records
+
+name: campus-basic
+notes:
+  - {x: 150, y: 60, text: "VLAN 10 -- STAFF  10.20.10.0/24"}
+  - {x: 330, y: 60, text: "VLAN 20 -- STUDENTS  10.20.20.0/24"}
+
+devices:
+  - name: CAMPUS-RTR
+    kind: router
+    x: 250
+    y: 140
+    config: |
+      enable
+      configure terminal
+      hostname CAMPUS-RTR
+      interface GigabitEthernet0/0
+       no shutdown
+      interface GigabitEthernet0/0.10
+       encapsulation dot1Q 10
+       ip address 10.20.10.1 255.255.255.0
+      interface GigabitEthernet0/0.20
+       encapsulation dot1Q 20
+       ip address 10.20.20.1 255.255.255.0
+      ip dhcp excluded-address 10.20.10.1 10.20.10.9
+      ip dhcp excluded-address 10.20.20.1 10.20.20.9
+      ip dhcp pool STAFF-POOL
+       network 10.20.10.0 255.255.255.0
+       default-router 10.20.10.1
+       dns-server 10.20.10.10
+      ip dhcp pool STUDENT-POOL
+       network 10.20.20.0 255.255.255.0
+       default-router 10.20.20.1
+       dns-server 10.20.10.10
+      end
+      write memory
+
+  - name: CAMPUS-SW
+    kind: switch
+    x: 250
+    y: 280
+    config: |
+      enable
+      configure terminal
+      hostname CAMPUS-SW
+      vlan 10
+       name STAFF
+      vlan 20
+       name STUDENTS
+      interface GigabitEthernet0/1
+       description Trunk-to-CAMPUS-RTR
+       switchport mode trunk
+       switchport trunk allowed vlan 10,20
+      interface FastEthernet0/1
+       description STAFF port
+       switchport access vlan 10
+      interface FastEthernet0/11
+       description STUDENT port
+       switchport access vlan 20
+      interface FastEthernet0/24
+       description SERVER port
+       switchport access vlan 10
+      end
+      write memory
+
+  - name: SRV-DNS
+    kind: server
+    x: 430
+    y: 300
+    ip: 10.20.10.10
+    mask: 255.255.255.0
+    gateway: 10.20.10.1
+    dns: 10.20.10.10
+    dns_records:
+      - [campus.local, 10.20.10.10]
+      - [www.campus.local, 10.20.10.10]
+
+  - name: STAFF-PC
+    kind: pc
+    x: 90
+    y: 320
+    # DHCP client with its acquired lease seeded (how PT saves it)
+    dhcp: true
+    ip: 10.20.10.11
+    mask: 255.255.255.0
+    gateway: 10.20.10.1
+    dns: 10.20.10.10
+
+  - name: LAB-PC
+    kind: pc
+    x: 400
+    y: 420
+    dhcp: true
+    ip: 10.20.20.21
+    mask: 255.255.255.0
+    gateway: 10.20.20.1
+    dns: 10.20.10.10
+
+links:
+  - [CAMPUS-RTR, GigabitEthernet0/0, CAMPUS-SW, GigabitEthernet0/1]
+  - [CAMPUS-SW, FastEthernet0/1, STAFF-PC, FastEthernet0]
+  - [CAMPUS-SW, FastEthernet0/11, LAB-PC, FastEthernet0]
+  - [CAMPUS-SW, FastEthernet0/24, SRV-DNS, FastEthernet0]

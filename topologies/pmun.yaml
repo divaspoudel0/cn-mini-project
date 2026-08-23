@@ -1,0 +1,200 @@
+# PMUN -- Pulchowk Metropolitan University Network (full reference build).
+#
+# This is the same 32-device network shipped under packet-builder/, now
+# expressed in the portable topology format. IOS configs are referenced
+# from device-configs/ so they stay the single source of truth.
+#
+# Build it:   pktbuild build pmun.yaml -o output
+# Validate:   pktbuild validate pmun.yaml
+
+name: pmun_topology
+notes:
+  - {x: 140, y: 190, text: "OSPF AREA 0 - BACKBONE (R1 R2 R3 R9)"}
+  - {x: 30, y: 420, text: "OSPF AREA 1 (R2 R4 R5 R6)"}
+  - {x: 410, y: 420, text: "OSPF AREA 2 (R3 R7 R8 R10)"}
+  - {x: 300, y: 160, text: "DMZ-LAN 10.10.0.96/27 (DNS-2, WEB-2)"}
+  - {x: 620, y: 50, text: "UPSTREAM ISP - static route only"}
+  - {x: 20, y: 720, text: "SERVER FARM 10.10.0.0/27 (DNS-1, WEB-1, MAIL)"}
+
+devices:
+  # ------------------------------------------------------------- routers
+  - {name: ISP-RTR, kind: router, x: 680, y: 90,
+     config_file: ../device-configs/ISP-RTR.txt}
+  - {name: R9-BORDER, kind: router, x: 360, y: 90,
+     config_file: ../device-configs/R9-BORDER.txt}
+  - {name: R1-CORE, kind: router, x: 200, y: 230,
+     config_file: ../device-configs/R1-CORE.txt}
+  - {name: R2-DIST-A1, kind: router, x: 90, y: 350,
+     config_file: ../device-configs/R2-DIST-A1.txt}
+  - {name: R3-DIST-A2, kind: router, x: 310, y: 350,
+     config_file: ../device-configs/R3-DIST-A2.txt}
+  - {name: R4-ACC-ADMIN, kind: router, x: 40, y: 470,
+     config_file: ../device-configs/R4-ACC-ADMIN.txt}
+  - {name: R5-ACC-FACULTY, kind: router, x: 150, y: 470,
+     config_file: ../device-configs/R5-ACC-FACULTY.txt}
+  - {name: R6-ACC-STUDENT, kind: router, x: 260, y: 470,
+     config_file: ../device-configs/R6-ACC-STUDENT.txt}
+  - {name: R7-ACC-ENG, kind: router, x: 420, y: 470,
+     config_file: ../device-configs/R7-ACC-ENG.txt}
+  - {name: R8-ACC-HOSTEL, kind: router, x: 520, y: 470,
+     config_file: ../device-configs/R8-ACC-HOSTEL.txt}
+  - {name: R10-ACC-BRANCH, kind: router, x: 470, y: 600,
+     config_file: ../device-configs/R10-ACC-BRANCH.txt}
+
+  # ------------------------------------------------------------ switches
+  - {name: SW-ADMIN, kind: switch, x: 40, y: 570,
+     config_file: ../device-configs/SW-ADMIN.txt}
+  - {name: SW-FACULTY, kind: switch, x: 150, y: 570,
+     config_file: ../device-configs/SW-FACULTY.txt}
+  - {name: SW-STUDENT, kind: switch, x: 260, y: 570,
+     config_file: ../device-configs/SW-STUDENT.txt}
+  - {name: SW-SERVICES, kind: switch, x: 40, y: 670,
+     config_file: ../device-configs/SW-SERVICES.txt}
+  - {name: SW-DMZ, kind: switch, x: 360, y: 200,
+     config_file: ../device-configs/SW-DMZ.txt}
+
+  # ------------------------------------------------------------- servers
+  - name: DNS-1
+    kind: server
+    x: 20
+    y: 750
+    ip: 10.10.0.10
+    mask: 255.255.255.224
+    gateway: 10.10.0.1
+    dns: 10.10.0.10
+    dns_records:
+      - [dns.pmun.edu.np, 10.10.0.10]
+      - [www.pmun.edu.np, 10.10.0.11]
+      - [intranet.pmun.edu.np, 10.10.0.101]
+      - [mail.pmun.edu.np, 10.10.0.12]
+
+  - name: WEB-1
+    kind: server
+    x: 90
+    y: 750
+    ip: 10.10.0.11
+    mask: 255.255.255.224
+    gateway: 10.10.0.1
+    dns: 10.10.0.10
+
+  - name: MAIL-SERVER
+    kind: server
+    x: 160
+    y: 750
+    ip: 10.10.0.12
+    mask: 255.255.255.224
+    gateway: 10.10.0.1
+    dns: 10.10.0.10
+
+  - name: DNS-2
+    kind: server
+    x: 300
+    y: 290
+    ip: 10.10.0.100
+    mask: 255.255.255.224
+    gateway: 10.10.0.97
+    dns: 10.10.0.10
+    dns_records:
+      - [dns.pmun.edu.np, 10.10.0.10]
+      - [www.pmun.edu.np, 10.10.0.11]
+      - [intranet.pmun.edu.np, 10.10.0.101]
+      - [mail.pmun.edu.np, 10.10.0.12]
+
+  - name: WEB-2
+    kind: server
+    x: 420
+    y: 290
+    ip: 10.10.0.101
+    mask: 255.255.255.224
+    gateway: 10.10.0.97
+    dns: 10.10.0.10
+
+  - name: ISP-DNS
+    kind: server
+    x: 680
+    y: 200
+    ip: 198.51.100.2
+    mask: 255.255.255.240
+    gateway: 198.51.100.1
+    dns: 198.51.100.2
+    dns_records:
+      - [ns.isp.net, 198.51.100.2]
+
+  # ------------------------------------------------- PCs (DHCP clients)
+  - {name: ADMIN-PC, kind: pc, x: 20, y: 640, dhcp: true,
+     ip: 10.10.0.141, mask: 255.255.255.128, gateway: 10.10.0.129,
+     dns: 10.10.0.10}
+  - {name: ADMIN-PC2, kind: pc, x: 60, y: 640, dhcp: true,
+     ip: 10.10.0.142, mask: 255.255.255.128, gateway: 10.10.0.129,
+     dns: 10.10.0.10}
+  - {name: ADMIN-PC3, kind: pc, x: 175, y: 640, dhcp: true,
+     ip: 10.10.0.143, mask: 255.255.255.128, gateway: 10.10.0.129,
+     dns: 10.10.0.10}
+  - {name: FACULTY-PC, kind: pc, x: 130, y: 640, dhcp: true,
+     ip: 10.10.1.11, mask: 255.255.255.128, gateway: 10.10.1.1,
+     dns: 10.10.0.10}
+  - {name: STUDENT-PC, kind: pc, x: 240, y: 640, dhcp: true,
+     ip: 10.10.2.21, mask: 255.255.255.0, gateway: 10.10.2.1,
+     dns: 10.10.0.10}
+  - {name: STUDENT-PC2, kind: pc, x: 280, y: 640, dhcp: true,
+     ip: 10.10.2.22, mask: 255.255.255.0, gateway: 10.10.2.1,
+     dns: 10.10.0.10}
+  - {name: LIBRARY-PC, kind: pc, x: 90, y: 540, dhcp: true,
+     ip: 10.10.0.41, mask: 255.255.255.224, gateway: 10.10.0.33,
+     dns: 10.10.0.10}
+  - {name: ENG-PC, kind: pc, x: 400, y: 560, dhcp: true,
+     ip: 10.10.1.141, mask: 255.255.255.192, gateway: 10.10.1.129,
+     dns: 10.10.0.10}
+  - {name: HOSTEL-PC, kind: pc, x: 500, y: 560, dhcp: true,
+     ip: 10.10.3.21, mask: 255.255.255.0, gateway: 10.10.3.1,
+     dns: 10.10.0.10}
+  - {name: BRANCH-PC, kind: pc, x: 450, y: 690, dhcp: true,
+     ip: 10.10.0.71, mask: 255.255.255.240, gateway: 10.10.0.65,
+     dns: 10.10.0.10}
+
+links:
+  # --------------------------------------------- serial point-to-point
+  # DCE side auto-detected from `clock rate` in each router config.
+  - [ISP-RTR, Serial0/0/0, R9-BORDER, Serial0/0/1]
+  - [R9-BORDER, Serial0/0/0, R1-CORE, Serial0/1/0]
+  - [R1-CORE, Serial0/0/0, R2-DIST-A1, Serial0/0/0]
+  - [R1-CORE, Serial0/0/1, R3-DIST-A2, Serial0/0/1]
+  - [R2-DIST-A1, Serial0/0/1, R3-DIST-A2, Serial0/0/0]
+  - [R2-DIST-A1, Serial0/1/0, R4-ACC-ADMIN, Serial0/0/0]
+  - [R2-DIST-A1, Serial0/1/1, R5-ACC-FACULTY, Serial0/0/0]
+  - [R2-DIST-A1, Serial0/2/0, R6-ACC-STUDENT, Serial0/0/0]
+  - [R5-ACC-FACULTY, Serial0/0/1, R6-ACC-STUDENT, Serial0/0/1]
+  - [R3-DIST-A2, Serial0/1/0, R7-ACC-ENG, Serial0/0/0]
+  - [R3-DIST-A2, Serial0/1/1, R8-ACC-HOSTEL, Serial0/0/0]
+  - [R7-ACC-ENG, Serial0/0/1, R10-ACC-BRANCH, Serial0/0/0]
+  - [R8-ACC-HOSTEL, Serial0/0/1, R10-ACC-BRANCH, Serial0/0/1]
+
+  # ------------------------------------------- copper / ethernet wiring
+  # access routers -> switches
+  - [R4-ACC-ADMIN, GigabitEthernet0/0, SW-ADMIN, GigabitEthernet0/1]
+  - [R5-ACC-FACULTY, GigabitEthernet0/0, SW-FACULTY, GigabitEthernet0/1]
+  - [R6-ACC-STUDENT, GigabitEthernet0/0, SW-STUDENT, GigabitEthernet0/1]
+  # inter-switch trunks
+  - [SW-ADMIN, GigabitEthernet0/2, SW-FACULTY, GigabitEthernet0/2]
+  - [SW-FACULTY, FastEthernet0/21, SW-STUDENT, GigabitEthernet0/2]
+  # server farm (area 1)
+  - [R4-ACC-ADMIN, GigabitEthernet0/1, SW-SERVICES, GigabitEthernet0/1]
+  - [SW-SERVICES, FastEthernet0/1, DNS-1, FastEthernet0]
+  - [SW-SERVICES, FastEthernet0/2, WEB-1, FastEthernet0]
+  - [SW-SERVICES, FastEthernet0/3, MAIL-SERVER, FastEthernet0]
+  # DMZ (area 0)
+  - [R9-BORDER, GigabitEthernet0/0, SW-DMZ, GigabitEthernet0/1]
+  - [SW-DMZ, FastEthernet0/1, DNS-2, FastEthernet0]
+  - [SW-DMZ, FastEthernet0/2, WEB-2, FastEthernet0]
+  # PCs
+  - [R4-ACC-ADMIN, GigabitEthernet0/2, LIBRARY-PC, FastEthernet0]
+  - [SW-ADMIN, FastEthernet0/1, ADMIN-PC, FastEthernet0]
+  - [SW-ADMIN, FastEthernet0/2, ADMIN-PC2, FastEthernet0]
+  - [SW-FACULTY, FastEthernet0/1, FACULTY-PC, FastEthernet0]
+  - [SW-FACULTY, FastEthernet0/24, ADMIN-PC3, FastEthernet0]
+  - [SW-STUDENT, FastEthernet0/1, STUDENT-PC, FastEthernet0]
+  - [SW-STUDENT, FastEthernet0/2, STUDENT-PC2, FastEthernet0]
+  - [R7-ACC-ENG, GigabitEthernet0/0, ENG-PC, FastEthernet0]
+  - [R8-ACC-HOSTEL, GigabitEthernet0/0, HOSTEL-PC, FastEthernet0]
+  - [R10-ACC-BRANCH, GigabitEthernet0/0, BRANCH-PC, FastEthernet0]
+  - [ISP-RTR, GigabitEthernet0/0, ISP-DNS, FastEthernet0]
